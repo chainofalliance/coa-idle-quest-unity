@@ -1,0 +1,977 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Postchain.Client</name>
+    </assembly>
+    <members>
+        <member name="T:Chromia.Buffer">
+            <summary>
+            Wrapper for byte[] containing helper functionalities and parser.
+            </summary>
+        </member>
+        <member name="P:Chromia.Buffer.Bytes">
+            <summary>
+            Bytes contained in the buffer.
+            </summary>
+        </member>
+        <member name="P:Chromia.Buffer.Length">
+            <summary>
+            Amount of bytes stored in the buffer.
+            </summary>
+        </member>
+        <member name="P:Chromia.Buffer.IsEmpty">
+            <summary>
+            Whether the buffer contains any bytes or is empty.
+            </summary>
+        </member>
+        <member name="M:Chromia.Buffer.Parse(System.String)">
+            <summary>
+            Parses a <see cref="T:Chromia.Buffer"/> from the given string of raw bytes.
+            To parse a string representing an byte array (e.g. "AFFE") use <see cref="M:Chromia.Buffer.From(System.String)"/>.
+            </summary>
+            <param name="byteString">The string containing the bytes to be parsed.</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the bytes.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Buffer.From(System.String)">
+            <summary>
+            Parses a <see cref="T:Chromia.Buffer"/> out of a given string representing an byte array (e.g. "AFFE").
+            To parse a string containing the raw bytes use <see cref="M:Chromia.Buffer.Parse(System.String)"/>.
+            Accepts and removes strings prefixed by "0x".
+            </summary>
+            <param name="hexString">The string containing the bytes to be parsed. May be prefixed by "0x".</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the bytes.</returns>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Buffer.Repeat(System.Char,System.Int32)">
+            <summary>
+            Creates <see cref="T:Chromia.Buffer"/> by repeating a given character <paramref name="count"/> times.
+            </summary>
+            <param name="c">The character to repeat.</param>
+            <param name="count">How often to repeat the byte.</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the bytes.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Buffer.From(System.Byte[])">
+            <summary>
+            Creates <see cref="T:Chromia.Buffer"/> out of the given <paramref name="bytes"/>.
+            </summary>
+            <param name="bytes">The bytes to warp in a buffer.</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the bytes.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Buffer.From(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>
+            Creates <see cref="T:Chromia.Buffer"/> out of the given <paramref name="bytes"/>.
+            </summary>
+            <param name="bytes">The bytes to warp in a buffer.</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the bytes.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Buffer.Empty">
+            <summary>
+            Creates and empty <see cref="T:Chromia.Buffer"/>.
+            </summary>
+            <returns>The empty <see cref="T:Chromia.Buffer"/></returns>
+        </member>
+        <member name="M:Chromia.Buffer.#ctor(System.Byte[])">
+            <summary>
+            Creates <see cref="T:Chromia.Buffer"/> out of the given <paramref name="bytes"/>.
+            </summary>
+        </member>
+        <member name="M:Chromia.Buffer.Parse">
+            <summary>
+            Parses the bytes to a readable string.
+            </summary>
+            <returns>A readable string of the bytes.</returns>
+        </member>
+        <member name="M:Chromia.Buffer.ParseUTF8">
+            <summary>
+            Encodes the bytes in UTF8 format.
+            </summary>
+            <returns>The encoded UTF8 string.</returns>
+        </member>
+        <member name="M:Chromia.Buffer.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Chromia.Buffer.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Chromia.Buffer.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Chromia.Buffer.op_Equality(Chromia.Buffer,Chromia.Buffer)">
+            <inheritdoc />
+        </member>
+        <member name="M:Chromia.Buffer.op_Inequality(Chromia.Buffer,Chromia.Buffer)">
+            <inheritdoc />
+        </member>
+        <member name="T:Chromia.ChromiaClient">
+            <summary>
+            Client to interact with the Chromia blockchain.
+            </summary>
+        </member>
+        <member name="P:Chromia.ChromiaClient.BlockchainRID">
+            <summary>
+            The RID of the blockchain this client communicates with.
+            </summary>
+        </member>
+        <member name="P:Chromia.ChromiaClient.PollingRetries">
+            <summary>
+            The amount of transaction status request retries before giving up.
+            </summary>
+        </member>
+        <member name="P:Chromia.ChromiaClient.PollingInterval">
+            <summary>
+            The interval between each transaction status poll.
+            </summary>
+        </member>
+        <member name="P:Chromia.ChromiaClient.AttemptsPerEndpoint">
+            <summary>
+            The amount of attempts to request at each endpoint.
+            </summary>
+        </member>
+        <member name="P:Chromia.ChromiaClient.AttemptInterval">
+            <summary>
+            The interval between each request attempt.
+            </summary>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SetTransport(Chromia.Transport.ITransport)">
+            <summary>
+            Sets the transport object to be used for interaction with the blockchain.
+            Default is set to <see cref="T:Chromia.Transport.DefaultTransport"/>.
+            </summary>
+            <param name="transport">The transport object to use for blockchain interaction.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Sha256(Chromia.Buffer)">
+            <summary>
+            Creates an sha256 hash of the given buffer.
+            </summary>
+            <param name="buffer">The buffer to hash.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ObjectDisposedException"></exception>
+            <returns>The sha256 hash of the buffer.</returns>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Sha256(System.Byte[])">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Sha256(Chromia.Buffer)"/>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Hash(System.Object)">
+            <summary>
+            Parses the object to gtv and creates the merkle root hash of it.
+            </summary>
+            <param name="obj">The object to hash.</param>
+            <returns>The merkle root hash.</returns>
+        </member>
+        <member name="M:Chromia.ChromiaClient.EncodeToGtv(System.Object)">
+            <summary>
+            Encodes the given object to a gtv buffer.
+            </summary>
+            <param name="obj">The object to encode.</param>
+            <returns>The gtv encoded object.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.CreateFromDirectory(System.Collections.Generic.List{System.String},Chromia.Buffer)">
+            <summary>
+            Creates a new <see cref="T:Chromia.ChromiaClient"/> by getting the nodes from a directory.
+            </summary>
+            <param name="directoryNodeUrls">The directory nodes to query.</param>
+            <param name="blockchainRID">The blockchain RID of the application.</param>
+            <returns>This new <see cref="T:Chromia.ChromiaClient"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:System.UriFormatException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.CreateFromDirectory(System.String,Chromia.Buffer)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.CreateFromDirectory(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="directoryNodeUrl">The directory node to query.</param>
+            <param name="blockchainRID">The blockchain RID of the application.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.CreateFromDirectory(System.String,System.Int32)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.CreateFromDirectory(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="directoryNodeUrl">The directory node to query.</param>
+            <param name="blockchainIID">The blockchain IID of the application. Gets resolved to the blockchain RID.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.CreateFromDirectory(System.Collections.Generic.List{System.String},System.Int32)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.CreateFromDirectory(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="directoryNodeUrls">The directory nodes to query.</param>
+            <param name="blockchainIID">The blockchain IID of the application. Gets resolved to the blockchain RID.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Create(System.Collections.Generic.List{System.String},Chromia.Buffer)">
+            <summary>
+            Creates a new <see cref="T:Chromia.ChromiaClient"/> with the given nodes.
+            </summary>
+            <param name="nodeUrls">The nodes to interact with.</param>
+            <param name="blockchainRID">The blockchain RID of the application.</param>
+            <returns>This new <see cref="T:Chromia.ChromiaClient"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:System.UriFormatException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Create(System.String,Chromia.Buffer)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Create(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="nodeUrl">The node to interact with.</param>
+            <param name="blockchainRID">The blockchain RID of the application.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Create(System.String,System.Int32)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Create(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="nodeUrl">The node to interact with.</param>
+            <param name="blockchainIID">The blockchain IID of the application. Gets resolved to the blockchain RID.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Create(System.Collections.Generic.List{System.String},System.Int32)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Create(System.Collections.Generic.List{System.String},Chromia.Buffer)"/>
+            <param name="nodeUrls">The nodes to interact with.</param>
+            <param name="blockchainIID">The blockchain IID of the application. Gets resolved to the blockchain RID.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.GetBlockchainRID(System.String,System.Int32)">
+            <summary>
+            Resolves the blockchain RID for the give blockchain IID.
+            </summary>
+            <param name="nodeUrl">The node to interact with.</param>
+            <param name="blockchainIID">The blockchain IID to resolve.</param>
+            <returns>The blockchain RID of that blockchain</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:System.UriFormatException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.AddNodeUrl(System.String)">
+            <summary>
+            Adds a node to the node pool.
+            </summary>
+            <param name="nodeUrl">The node to add.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.UriFormatException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.AddNodeUrl(System.Collections.Generic.List{System.String})">
+            <summary>
+            Adds nodes to the node pool.
+            </summary>
+            <returns>This object.</returns>
+            <param name="nodeUrl">The nodes to add.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.UriFormatException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SetPollingInterval(System.Int32)">
+            <summary>
+            Sets the interval in which the status of a transaction is being polled
+            while waiting for its confirmation.
+            </summary>
+            <returns>This object.</returns>
+            <param name="pollingInterval">The interval in which the status gets polled.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SetPollingRetries(System.Int32)">
+            <summary>
+            Sets the amount of retries the status of a transaction should be fetched for
+            before giving up.
+            </summary>
+            <returns>This object.</returns>
+            <param name="pollingRetries">The amount of tries to wait for transaction confirmation.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SetAttemptsPerEndpoint(System.Int32)">
+            <summary>
+            The amount of attempts to send requests to each node before giving up.
+            </summary>
+            <returns>This object.</returns>
+            <param name="attemptsPerEndpoint">The amount of retries per node.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SetAttemptInterval(System.Int32)">
+            <summary>
+            The interval between each retry while requesting the nodes.
+            </summary>
+            <returns>This object.</returns>
+            <param name="attemptInterval">The interval between retries.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.TransactionBuilder">
+            <summary>
+            Creates an empty <see cref="T:Chromia.Transaction"/> object to fill.
+            </summary>
+            <returns>An empty transaction object.</returns>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SendUniqueTransaction(Chromia.Operation,Chromia.SignatureProvider)">
+            <summary>
+            Sends a unique transaction to the blockchain.
+            A "no-operation" operation is added to the transaction.
+            </summary>
+            <param name="operation">The operation to send to the blockchain.</param>
+            <param name="signer">The operation to send to the blockchain.</param>
+            <returns>The transaction receipt of the transaction.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SendUniqueTransaction(Chromia.Transaction)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.SendUniqueTransaction(Chromia.Operation,Chromia.SignatureProvider)"/>
+            <param name="tx">The transaction to send to the blockchain.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SendTransaction(Chromia.Transaction)">
+            <summary>
+            Signs and sends a transaction to the blockchain.
+            </summary>
+            <param name="tx">The transatcion to send to the blockchain.</param>
+            <returns>The transaction receipt of the transaction.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.SendTransaction(Chromia.Transaction.Signed)">
+            <summary>
+            Sends a signed transaction and waits for it to be processed.
+            </summary>
+            <param name="tx">The signed transaction to send.</param>
+            <returns>A receipt for that transaction.</returns>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.GetTransactionStatus(Chromia.Buffer)">
+            <summary>
+            Gets the status of a transaction in the blockchain network.
+            </summary>
+            <param name="transactionRID">The transaction hash to check.</param>
+            <returns>The current status of the transaction in the network.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Query``1(System.String,System.Object)">
+            <summary>
+            Queries data from the blockchain.
+            </summary>
+            <param name="name">The name of the query.</param>
+            <param name="parameters">The parameters of the query.</param>
+            <returns>The data parsed as the given type.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+            <exception cref="T:Chromia.TransportException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Query``1(System.String,Chromia.Encoding.IGtvSerializable)">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Query``1(System.String,System.Object)"/>
+            <param name="name">The name of the query.</param>
+            <param name="obj">A gtv serializable object as query parameters.</param>
+        </member>
+        <member name="M:Chromia.ChromiaClient.Query``1(System.String,System.ValueTuple{System.String,System.Object}[])">
+            <inheritdoc cref="M:Chromia.ChromiaClient.Query``1(System.String,System.Object)"/>
+        </member>
+        <member name="T:Chromia.ChromiaException">
+            <summary>
+            Base application exception for all Chromia related exceptions.
+            </summary>
+        </member>
+        <member name="M:Chromia.ChromiaException.#ctor(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.TransportException">
+            <summary>
+            Exception raised for errors in transport layer.
+            </summary>
+        </member>
+        <member name="T:Chromia.TransportException.ReasonCode">
+            <summary>
+            The reason why the request failed.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransportException.ReasonCode.Unknown">
+            <summary>
+            Any other reason why the request failed. Check <see cref="P:System.Exception.Message"/> for details.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransportException.ReasonCode.HttpError">
+            <summary>
+            The node returned and http error code. Check <see cref="P:Chromia.TransportException.StatusCode"/> for details.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransportException.ReasonCode.MalformedUri">
+            <summary>
+            The given node url was faulty.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransportException.ReasonCode.Timeout">
+            <summary>
+            The request timed out.
+            </summary>
+        </member>
+        <member name="P:Chromia.TransportException.Reason">
+            <summary>
+            Reason why the exception was thrown.
+            </summary>
+        </member>
+        <member name="P:Chromia.TransportException.StatusCode">
+            <summary>
+            Http status code from the Reason.HttpError, -1 otherwise.
+            </summary>
+        </member>
+        <member name="M:Chromia.TransportException.#ctor(Chromia.TransportException.ReasonCode,System.String,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.Encoding.IGtvSerializable">
+            <summary>
+            Interface to define classes that can be used as query
+            or operation parameter.
+            </summary>
+        </member>
+        <member name="T:Chromia.Operation">
+            <summary>
+            Contains information about a Chromia operation.
+            </summary>
+        </member>
+        <member name="F:Chromia.Operation.Name">
+            <summary>
+            The name of the operation.
+            </summary>
+        </member>
+        <member name="F:Chromia.Operation.Parameters">
+            <summary>
+            Ordered list of parameters.
+            </summary>
+        </member>
+        <member name="M:Chromia.Operation.#ctor(System.String)">
+            <summary>
+            Creates a new parameterless operation.
+            </summary>
+            <param name="name">The name of the operation.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.#ctor(System.String,Chromia.Encoding.IGtvSerializable)">
+            <summary>
+            Creates a new operation.
+            </summary>
+            <param name="name">The name of the operation.</param>
+            <param name="gtv">The parameters of the operation in gtv serializable format.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.#ctor(System.String,System.Object[])">
+            <summary>
+            Creates a new operation.
+            </summary>
+            <param name="name">The name of the operation.</param>
+            <param name="args">The parameters of the operation.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.#ctor(System.String,System.Collections.Generic.List{System.Object})">
+            <summary>
+            Creates a new operation.
+            </summary>
+            <param name="name">The name of the operation.</param>
+            <param name="args">The parameters of the operation.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.AddParameter(System.Object)">
+            <summary>
+            Adds a parameter to the operation and returns the object.
+            </summary>
+            <param name="parameter">The new parameter.</param>
+            <returns>This object.</returns>
+        </member>
+        <member name="M:Chromia.Operation.Encode">
+            <summary>
+            Encodes the operation to an ASN1 buffer.
+            </summary>
+            <returns>The ASN1 bytes in a <see cref="T:Chromia.Buffer"/>.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.Decode(System.Object[])">
+            <summary>
+            Decodes an object to an operation.
+            </summary>
+            <param name="obj">The object array containing the name and parameters.</param>
+            <returns>The decoded <see cref="T:Chromia.Operation"/>.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.Decode(Chromia.Buffer)">
+            <summary>
+            Decodes an ASN1 buffer to an operation.
+            </summary>
+            <param name="buffer">The ASN1 bytes.</param>
+            <returns>The decoded <see cref="T:Chromia.Operation"/>.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Operation.Nop">
+            <summary>
+            A "no-operation" operation used to create unique transaction hashes.
+            </summary>
+            <returns>The "no-operation" operation.</returns>
+        </member>
+        <member name="M:Chromia.Operation.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Operation.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Operation.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.KeyPair">
+            <summary>
+            Wrapper for a Secp256k1 key pair.
+            </summary>
+        </member>
+        <member name="F:Chromia.KeyPair.PubKey">
+            <summary>
+            Public key of the keypair.
+            </summary>
+        </member>
+        <member name="F:Chromia.KeyPair.PrivKey">
+            <summary>
+            Privat key of the keypair.
+            </summary>
+        </member>
+        <member name="M:Chromia.KeyPair.#ctor(Chromia.Buffer)">
+            <summary>
+            Creates a key pair out of the given <paramref name="privKey"/>.
+            </summary>
+            <param name="privKey">Buffer containing the private key. Has to be 32 bytes.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.KeyPair.GeneratePrivKey">
+            <summary>
+            Generates a new random private key.
+            </summary>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the private key.</returns>
+        </member>
+        <member name="M:Chromia.KeyPair.GetPubKey(Chromia.Buffer)">
+            <summary>
+            Generates a public key out of the given <paramref name="privKey"/>.
+            </summary>
+            <param name="privKey">Buffer containing the private key. Has to be 32 bytes.</param>
+            <returns>The <see cref="T:Chromia.Buffer"/> containing the public key.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.KeyPair.EnsurePublicKey(Chromia.Buffer)">
+            <summary>
+            Ensures that a buffer is a valid public key.
+            </summary>
+            <param name="pubKey">The buffer to check for a public key.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.KeyPair.EnsurePrivateKey(Chromia.Buffer)">
+            <summary>
+            Ensures that a buffer is a valid private key.
+            </summary>
+            <param name="privKey">The buffer to check for a private key.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="T:Chromia.Signature">
+            <summary>
+            Wrapper for a signed message hash.
+            </summary>
+        </member>
+        <member name="F:Chromia.Signature.PubKey">
+            <summary>
+            Public key of the key pair that signed created the <see cref="F:Chromia.Signature.Hash"/>.
+            </summary>
+        </member>
+        <member name="F:Chromia.Signature.Hash">
+            <summary>
+            Signature hash of a message.
+            </summary>
+        </member>
+        <member name="M:Chromia.Signature.#ctor(Chromia.Buffer,Chromia.Buffer)">
+            <summary>
+            Creates a new signature.
+            </summary>
+            <param name="pubKey">The public key of the key pair that signed the <paramref name="hash"/>. Has to be a valid public key.</param>
+            <param name="hash">Signature hash of a message.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Signature.Ensure(Chromia.Buffer)">
+            <summary>
+            Ensures that a buffer is a valid signature hash.
+            </summary>
+            <param name="hash">The buffer to check for a signature hash.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="T:Chromia.SignatureProvider">
+            <summary>
+            Provides a key pair to sign transactions.
+            </summary>
+        </member>
+        <member name="P:Chromia.SignatureProvider.PubKey">
+            <summary>
+            Public key of the keypair used by the signature provider.
+            </summary>
+        </member>
+        <member name="M:Chromia.SignatureProvider.Create">
+            <summary>
+            Creates a new <see cref="T:Chromia.SignatureProvider"/> with a generated key pair.
+            </summary>
+            <returns>The created <see cref="T:Chromia.SignatureProvider"/>.</returns>
+        </member>
+        <member name="M:Chromia.SignatureProvider.Create(Chromia.Buffer)">
+            <summary>
+            Creates a new <see cref="T:Chromia.SignatureProvider"/> out of the private key.
+            </summary>
+            <param name="privKey">Buffer containing the private key. Has to contain 32 bytes.</param>
+            <returns>The created <see cref="T:Chromia.SignatureProvider"/>.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.SignatureProvider.Create(Chromia.KeyPair)">
+            <summary>
+            Creates a new <see cref="T:Chromia.SignatureProvider"/> with the given <see cref="T:Chromia.KeyPair"/>.
+            </summary>
+            <param name="keyPair">Key pair that is used to sign.</param>
+            <returns>The created <see cref="T:Chromia.SignatureProvider"/>.</returns>
+        </member>
+        <member name="M:Chromia.SignatureProvider.GenerateKeyPair">
+            <summary>
+            Generates a new <see cref="T:Chromia.KeyPair"/>.
+            </summary>
+            <returns>The generated key pair.</returns>
+        </member>
+        <member name="M:Chromia.SignatureProvider.EnsureValidMessage(Chromia.Buffer)">
+            <summary>
+            Ensures that a buffer is a valid message.
+            </summary>
+            <param name="message">The buffer to check for a message.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.SignatureProvider.Sign(Chromia.Buffer)">
+            <summary>
+            Signs the given <see cref="T:Chromia.Buffer"/>.
+            </summary>
+            <param name="buffer">The buffer to sign.</param>
+            <returns>The signed hash wrapped as a <see cref="T:Chromia.Signature"/>.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.SignatureProvider.Verify(Chromia.Signature,Chromia.Buffer)">
+            <summary>
+            Verifies the signature is correct for the given <see cref="T:Chromia.Buffer"/>.
+            </summary>
+            <param name="sig">The signature go verify.</param>
+            <param name="buffer">The buffer the signature was created from.</param>
+            <returns>True if the signature is valid, false if not.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="T:Chromia.TransactionStatusResponse">
+            <summary>
+            Status of a transaction in the blockchain network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionStatusResponse.Status">
+            <summary>
+            Response status code from the network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionStatusResponse.RejectReason">
+            <summary>
+            Reason why the transaction failed should <see cref="F:Chromia.TransactionStatusResponse.Status"/> be <see cref="F:Chromia.TransactionReceipt.ResponseStatus.Rejected"/>.
+            </summary>
+        </member>
+        <member name="T:Chromia.TransactionReceipt">
+            <summary>
+            Receipt for a transaction containing its status.
+            </summary>
+        </member>
+        <member name="T:Chromia.TransactionReceipt.ResponseStatus">
+            <summary>
+            Response status code from the network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.Confirmed">
+            <summary>
+            Transaction was confirmed.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.Rejected">
+            <summary>
+            Transaction was rejected. Check <see cref="F:Chromia.TransactionReceipt.RejectReason"/> why.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.Unknown">
+            <summary>
+            Transaction with that transaction RID doesn't exist in network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.Waiting">
+            <summary>
+            Transaction is waiting to be confirmed by network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.Timeout">
+            <summary>
+            Waiting for the confirmation of a transaction timed out.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.ResponseStatus.DoubleTx">
+            <summary>
+            The transaction could not be added because a transaction with the
+            transaction RID already exists in network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.Status">
+            <summary>
+            The last known status of the transaction in the network.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.RejectReason">
+            <summary>
+            Contains the reason why the transaction was rejected in case 
+            <see cref="F:Chromia.TransactionReceipt.Status"/> is set to <see cref="F:Chromia.TransactionReceipt.ResponseStatus.Rejected"/>.
+            Empty otherwise.
+            </summary>
+        </member>
+        <member name="F:Chromia.TransactionReceipt.TransactionRID">
+            <summary>
+            The transaction hash.
+            </summary>
+        </member>
+        <member name="T:Chromia.Transaction">
+            <summary>
+            Contains information about a Chromia transaction.
+            </summary>
+        </member>
+        <member name="M:Chromia.Transaction.TransactionRID">
+            <summary>
+            The transaction hash.
+            </summary>
+        </member>
+        <member name="M:Chromia.Transaction.Build">
+            <summary>
+            Builds a new empty transaction.
+            </summary>
+            <returns>The empty <see cref="T:Chromia.Transaction"/>.</returns>
+        </member>
+        <member name="M:Chromia.Transaction.Build(Chromia.Buffer)">
+            <summary>
+            Builds a new empty transaction.
+            </summary>
+            <param name="blockchainRID">The RID of the blockchain.</param>
+            <returns>The empty <see cref="T:Chromia.Transaction"/>.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Build(Chromia.Buffer,System.Collections.Generic.List{Chromia.Operation},System.Collections.Generic.HashSet{Chromia.Buffer},System.Collections.Generic.HashSet{Chromia.SignatureProvider})">
+            <summary>
+            Builds a new transaction.
+            </summary>
+            <param name="blockchainRID">The RID of the blockchain.</param>
+            <param name="operations">The operations to be added to the transaction.</param>
+            <param name="signers">The signers that need to sign the transaction.</param>
+            <param name="signatureProviders">The <see cref="T:Chromia.SignatureProvider"/> that sign the transaction.</param>
+            <returns>The new <see cref="T:Chromia.Transaction"/>.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Decode(Chromia.Buffer)">
+            <summary>
+            Decodes a buffer to a signed transaction.
+            </summary>
+            <param name="buffer">The buffer to decode.</param>
+            <returns>The decoded <see cref="T:Chromia.Transaction.Signed"/> object.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.EnsureRID(Chromia.Buffer)">
+            <summary>
+            Ensures a buffer is a valid transaction RID. Throws an exception if not.
+            </summary>
+            <param name="transactionRID">The transaction RID to check.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.SetBlockchainRID(Chromia.Buffer)">
+            <summary>
+            Sets the blockchain RID of the transaction.
+            </summary>
+            <param name="blockchainRID">The RID of the blockchain to set.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.AddOperation(Chromia.Operation)">
+            <summary>
+            Adds an <see cref="T:Chromia.Operation"/> to the transaction.
+            </summary>
+            <param name="operation">The operation to add to the transaction.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.AddOperations(System.Collections.Generic.List{Chromia.Operation})">
+            <summary>
+            Adds multiple <see cref="T:Chromia.Operation"/> to the transaction.
+            </summary>
+            <param name="operations">The operations to add to the transaction.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.AddNop">
+            <summary>
+            Adds a "no-operation" <see cref="T:Chromia.Operation"/> to the transaction.
+            </summary>
+            <returns>This object.</returns>
+        </member>
+        <member name="M:Chromia.Transaction.AddSigner(Chromia.Buffer)">
+            <summary>
+            Adds a public key as signer to the transaction.
+            </summary>
+            <param name="signer">The public key to add as signer to the transaction.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.AddSigners(System.Collections.Generic.HashSet{Chromia.Buffer})">
+            <summary>
+            Adds multiple public keys as signers to the transaction.
+            </summary>
+            <param name="signers">The public keys to add as signers to the transaction.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.AddSignatureProvider(Chromia.SignatureProvider)">
+            <summary>
+            Adds a <see cref="T:Chromia.SignatureProvider"/> to the transaction
+            and the public key of the provider as a signer.
+            </summary>
+            <param name="signatureProvider">The <see cref="T:Chromia.SignatureProvider"/> to add to the transaction.</param>
+            <returns>This object.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Sign(Chromia.SignatureProvider)">
+            <summary>
+            Signs the transaction with the given signature provider.
+            Does <b>not</b> add the public key as a signer before signing. 
+            </summary>
+            <param name="signatureProvider">The <see cref="T:Chromia.SignatureProvider"/> to sign the transaction.</param>
+            <returns>The <see cref="T:Chromia.Signature"/> created by the provider.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Sign(System.Collections.Generic.List{Chromia.Signature})">
+            <summary>
+            Signs the transaction. Accepts signatures as a parameter that
+            were created beforehand.
+            </summary>
+            <param name="preSigned">Signature that were created beforehand. May be null or empty.</param>
+            <returns>The <see cref="T:Chromia.Transaction.Signed"/> transaction.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Sign(Chromia.Signature)">
+            <summary>
+            Signs the transaction. Accepts a signature as a parameter that
+            was created beforehand.
+            </summary>
+            <param name="preSigned">Signature that was created beforehand.</param>
+            <returns>The <see cref="T:Chromia.Transaction.Signed"/> transaction.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transaction.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transaction.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.Transaction.Signed">
+            <summary>
+            Contains information about a signed Chromia transaction.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.BlockchainRID">
+            <summary>
+            The blockchain RID the transaction is valid for.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.TransactionRID">
+            <summary>
+            The transaction hash.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.SignedHash">
+            <summary>
+            The transaction body.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.Operations">
+            <summary>
+            List of <see cref="T:Chromia.Operation"/> that are included in the transaction.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.Signers">
+            <summary>
+            List of signers that signed the transaction.
+            </summary>
+        </member>
+        <member name="F:Chromia.Transaction.Signed.Signatures">
+            <summary>
+            List of signatures for the transaction.
+            </summary>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.From(Chromia.Transaction,System.Collections.Generic.List{Chromia.Signature})">
+            <summary>
+            Creates a signed transaction out of a transaction.
+            Accepts signatures that were created beforehand.
+            </summary>
+            <param name="tx">The transaction to sign.</param>
+            <param name="preSigned">List of signatures for the transaction that were created beforehand.</param>
+            <returns>The signed transaction.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.From(Chromia.Buffer)">
+            <summary>
+            Decodes a buffer into a signed transaction.
+            </summary>
+            <param name="buffer">The buffer to decode.</param>
+            <returns>The signed transaction.</returns>
+            <exception cref="T:Chromia.ChromiaException"></exception>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.op_Equality(Chromia.Transaction.Signed,Chromia.Transaction.Signed)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.op_Inequality(Chromia.Transaction.Signed,Chromia.Transaction.Signed)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transaction.Signed.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.Transport.DefaultTransport">
+            <summary>
+            Default .NET implementation of the transport.
+            </summary>
+        </member>
+        <member name="M:Chromia.Transport.DefaultTransport.Get(System.Uri)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transport.DefaultTransport.Post(System.Uri,Chromia.Buffer)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Chromia.Transport.DefaultTransport.Post(System.Uri,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Chromia.Transport.ITransport">
+            <summary>
+            Interface to define a transport layer that can be used by ChromiaClient.
+            </summary>
+        </member>
+        <member name="M:Chromia.Transport.ITransport.Get(System.Uri)">
+            <summary>
+            Sends a GET request to the uri.
+            </summary>
+            <param name="uri">The uri to send the request to.</param>
+            <returns>The response content.</returns>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.Transport.ITransport.Post(System.Uri,Chromia.Buffer)">
+            <summary>
+            Sends a POST request to the uri with Buffer content.
+            </summary>
+            <param name="uri">The uri to send the request to.</param>
+            <param name="content">The content to post.</param>
+            <returns>The response content.</returns>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+        <member name="M:Chromia.Transport.ITransport.Post(System.Uri,System.String)">
+            <summary>
+            Sends a POST request to the uri with Buffer content.
+            </summary>
+            <param name="uri">The uri to send the request to.</param>
+            <param name="content">The content to post.</param>
+            <returns>The response content.</returns>
+            <exception cref="T:Chromia.TransportException"></exception>
+        </member>
+    </members>
+</doc>
