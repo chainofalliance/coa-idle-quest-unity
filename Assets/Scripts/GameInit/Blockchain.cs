@@ -57,8 +57,6 @@ public class Blockchain : MonoBehaviour
         Signer = SignatureProvider.Create(privKey);
         await RegisterPlayer();
         Initialized = true;
-
-        Debug.Log("DONE!");
     }
 
     #region  Operations
@@ -232,12 +230,12 @@ public class Blockchain : MonoBehaviour
 
     public async UniTask<Dictionary<Consumable, int>> GetConsumablesFromShop()
     {
-        return await Client.Query<Dictionary<Consumable, int>>("IShop.get_consumables", ("account_id", AccountId));
+        return await Client.Query<Dictionary<Consumable, int>>("IShop.get_consumables");
     }
 
     public async UniTask<Dictionary<string, int>> GetBackpacksFromShop()
     {
-        return await Client.Query<Dictionary<string, int>>("IShop.get_backpacks", ("account_id", AccountId));
+        return await Client.Query<Dictionary<string, int>>("IShop.get_backpacks");
     }
     #endregion
 
