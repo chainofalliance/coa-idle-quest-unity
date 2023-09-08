@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MenuController
+public class MenuController : MonoBehaviour
 {
+    [SerializeField] private List<Menu> Menus;
+
     private readonly Stack<Menu> backgroundMenus = new Stack<Menu>(4);
     private GameObject menuRoot;
     private Menu activeMenu;
@@ -35,7 +37,6 @@ public class MenuController
             if (activeMenu != null && backgroundMenus.Contains(activeMenu) == false)
             {
                 activeMenu.Closed -= OnMenuClosed;
-                //  activeMenuMv.UnSubscribeEvents();
                 activeMenu.Hide();
             }
 

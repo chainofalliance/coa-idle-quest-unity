@@ -1,0 +1,192 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa910d1f1aac347709d00e61954e7bda, type: 3}
+  m_Name: Configuration
+  m_EditorClassIdentifier: 
+  RarityColors:
+  - rarity: 0
+    color: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
+  - rarity: 1
+    color: {r: 0.42738137, g: 0.7264151, b: 0.40775186, a: 0}
+  - rarity: 2
+    color: {r: 0.19708972, g: 0.68873096, b: 0.9716981, a: 0}
+  - rarity: 3
+    color: {r: 0.64510894, g: 0.2516465, b: 0.8207547, a: 0}
+  - rarity: 4
+    color: {r: 0.9150943, g: 0.5707977, b: 0.12517802, a: 0}
+  HeroRarityIcons:
+  - rarity: 0
+    heroRarity: {fileID: -1694222908, guid: 1d55b2a2359c045c3ab86b66e5378870, type: 3}
+  - rarity: 1
+    heroRarity: {fileID: 2051188511, guid: 1d55b2a2359c045c3ab86b66e5378870, type: 3}
+  - rarity: 2
+    heroRarity: {fileID: 396975283, guid: 1d55b2a2359c045c3ab86b66e5378870, type: 3}
+  - rarity: 3
+    heroRarity: {fileID: -1835966800, guid: 1d55b2a2359c045c3ab86b66e5378870, type: 3}
+  - rarity: 4
+    heroRarity: {fileID: 1479286658, guid: 1d55b2a2359c045c3ab86b66e5378870, type: 3}
+  RaceIcons:
+  - species: 0
+    icon: {fileID: 21300000, guid: e0938be191b673f4e93ebca2148ef565, type: 3}
+  - species: 1
+    icon: {fileID: 21300000, guid: ed489385e52afcb489418176200ab46a, type: 3}
+  - species: 2
+    icon: {fileID: 21300000, guid: 1d79b38946737ba4184716b1b1043674, type: 3}
+  - species: 3
+    icon: {fileID: 21300000, guid: 55c6b04891da36f4782014ae1ce1980e, type: 3}
+  ClassIcons:
+  - heroClass: 0
+    icon: {fileID: 21300000, guid: 8c14286ecaef1974bb9d4e029f1023a6, type: 3}
+  - heroClass: 1
+    icon: {fileID: 21300000, guid: 81e88185c21f3c9468ecc7fb58686e54, type: 3}
+  - heroClass: 2
+    icon: {fileID: 21300000, guid: da350e576c35d7a4b9cf19009d2e2a49, type: 3}
+  - heroClass: 3
+    icon: {fileID: 21300000, guid: 49c11c4df544ebd4c887d2efddf291dc, type: 3}
+  - heroClass: 4
+    icon: {fileID: 21300000, guid: df1f2df3d4857e3479441ce6a7cf94ef, type: 3}
+  BaseHealthCoefs:
+  - rarity: 0
+    coef: 1
+  - rarity: 1
+    coef: 1.25
+  - rarity: 2
+    coef: 1.5
+  - rarity: 3
+    coef: 2
+  - rarity: 4
+    coef: 2.5
+  BaseHealths:
+  - classType: 0
+    health: 90
+  - classType: 1
+    health: 120
+  - classType: 2
+    health: 80
+  - classType: 3
+    health: 100
+  - classType: 4
+    health: 100
+  TerrainBackgrounds:
+  - terrain: 0
+    background: {fileID: 21300000, guid: b3eba140d70e346e3ae9e18fb235e92a, type: 3}
+  - terrain: 1
+    background: {fileID: 21300000, guid: 9b7f94f51ac2a457b8a894c236cf899f, type: 3}
+  - terrain: 2
+    background: {fileID: 21300000, guid: fd5f415964c184683b5351aad95b5ec8, type: 3}
+  - terrain: 3
+    background: {fileID: 21300000, guid: 0e8386ef6daaa42be81bf459886fc521, type: 3}
+  HeroImages:
+  - rarity: 0
+    species: 0
+    heroClass: 0
+    image: {fileID: 0}
+  - rarity: 0
+    species: 1
+    heroClass: 0
+    image: {fileID: 934092181, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 0
+    species: 1
+    heroClass: 1
+    image: {fileID: -440599473, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 0
+    species: 1
+    heroClass: 2
+    image: {fileID: -1109805006, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 0
+    species: 1
+    heroClass: 3
+    image: {fileID: -1574077078, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 0
+    species: 1
+    heroClass: 4
+    image: {fileID: 597243807, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 1
+    species: 1
+    heroClass: 0
+    image: {fileID: 666706804, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 1
+    species: 1
+    heroClass: 1
+    image: {fileID: -1676644056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 1
+    species: 1
+    heroClass: 2
+    image: {fileID: -1235041394, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 1
+    species: 1
+    heroClass: 3
+    image: {fileID: 1642750407, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 1
+    species: 1
+    heroClass: 4
+    image: {fileID: -2008400056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 2
+    species: 1
+    heroClass: 0
+    image: {fileID: 1536413328, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 2
+    species: 1
+    heroClass: 1
+    image: {fileID: 635491602, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 2
+    species: 1
+    heroClass: 2
+    image: {fileID: -199706133, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 2
+    species: 1
+    heroClass: 3
+    image: {fileID: 1224611263, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 2
+    species: 1
+    heroClass: 4
+    image: {fileID: 1687679648, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 3
+    species: 1
+    heroClass: 0
+    image: {fileID: -328151623, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 3
+    species: 1
+    heroClass: 1
+    image: {fileID: -972118569, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 3
+    species: 1
+    heroClass: 2
+    image: {fileID: 1099948868, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 3
+    species: 1
+    heroClass: 3
+    image: {fileID: -372106745, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 3
+    species: 1
+    heroClass: 4
+    image: {fileID: -327673472, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 4
+    species: 1
+    heroClass: 0
+    image: {fileID: -230665338, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 4
+    species: 1
+    heroClass: 1
+    image: {fileID: -652155741, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 4
+    species: 1
+    heroClass: 2
+    image: {fileID: -589381419, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 4
+    species: 1
+    heroClass: 3
+    image: {fileID: -1059296008, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - rarity: 4
+    species: 1
+    heroClass: 4
+    image: {fileID: -135415149, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
