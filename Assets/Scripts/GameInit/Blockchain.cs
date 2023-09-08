@@ -236,14 +236,14 @@ public class Blockchain : MonoBehaviour
         return await Client.Query<List<HeroShopEntry>>("IShop.get_hero_selection", ("account_id", AccountId));
     }
 
-    public async UniTask<Dictionary<Consumable, int>> GetConsumablesFromShop()
+    public async UniTask<List<ConsumableShopEntry>> GetConsumablesFromShop()
     {
-        return await Client.Query<Dictionary<Consumable, int>>("IShop.get_consumables");
+        return await Client.Query<List<ConsumableShopEntry>>("IShop.get_consumables");
     }
 
-    public async UniTask<Dictionary<string, int>> GetBackpacksFromShop()
+    public async UniTask<List<BackpackShopEntry>> GetBackpacksFromShop()
     {
-        return await Client.Query<Dictionary<string, int>>("IShop.get_backpacks");
+        return (await Client.Query<List<BackpackShopEntry>>("IShop.get_backpacks"));
     }
     #endregion
 
@@ -269,6 +269,22 @@ public class Blockchain : MonoBehaviour
     {
         [JsonProperty("hero")]
         public Hero Hero;
+        [JsonProperty("price")]
+        public int Price;
+    }
+
+    public class ConsumableShopEntry
+    {
+        [JsonProperty("consumable")]
+        public Consumable Consumable;
+        [JsonProperty("price")]
+        public int Price;
+    }
+
+    public class BackpackShopEntry
+    {
+        [JsonProperty("backpack")]
+        public string Backpack;
         [JsonProperty("price")]
         public int Price;
     }
@@ -388,12 +404,26 @@ public class Blockchain : MonoBehaviour
     #region Enums
     public enum Consumable
     {
-        [EnumMember(Value = "health_potion_s")]
-        HealthPotionS,
-        [EnumMember(Value = "health_potion_m")]
-        HealthPotionM,
-        [EnumMember(Value = "health_potion_l")]
-        HealthPotionL
+        [EnumMember(Value = "heal_single_small")]
+        HealthPotionSingleSmall,
+        [EnumMember(Value = "heal_single_full")]
+        HealthPotionSingleFull,
+        [EnumMember(Value = "heal_party_s")]
+        HealthPotionPartySmall,
+        [EnumMember(Value = "heal_party_m")]
+        HealthPotionPartyMedium,
+        [EnumMember(Value = "heal_party_f")]
+        HealthPotionPartyFull,
+        [EnumMember(Value = "protect_s")]
+        ProtectSmall,
+        [EnumMember(Value = "protect_l")]
+        ProtectLarge,
+        [EnumMember(Value = "evade_encounter")]
+        EvadeCounter,
+        [EnumMember(Value = "changeling")]
+        Changeling,
+        [EnumMember(Value = "hustle")]
+        Hustle,
 
     }
 
