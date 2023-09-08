@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Linq;
+#if ENABLE_IL2CPP
+using Newtonsoft.Json.Utilities;
+#endif
 
 using Buffer = Chromia.Buffer;
 using System.Runtime.Serialization;
@@ -32,6 +35,10 @@ public class Blockchain : MonoBehaviour
             return;
         }
 
+#if ENABLE_IL2CPP
+            AotTypeEnforce();
+#endif
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
@@ -50,6 +57,8 @@ public class Blockchain : MonoBehaviour
         Signer = SignatureProvider.Create(privKey);
         await RegisterPlayer();
         Initialized = true;
+
+        Debug.Log("DONE!");
     }
 
     #region  Operations
@@ -466,4 +475,11 @@ public class Blockchain : MonoBehaviour
             null
         };
     }
+
+#if ENABLE_IL2CPP
+        private void AotTypeEnforce()
+        {
+            AotHelper.EnsureType<BufferConverter>();
+        }
+#endif
 }
