@@ -10,6 +10,7 @@ using Newtonsoft.Json.Utilities;
 
 using Buffer = Chromia.Buffer;
 using System.Runtime.Serialization;
+using System;
 
 public class Blockchain : MonoBehaviour
 {
@@ -57,6 +58,10 @@ public class Blockchain : MonoBehaviour
         Signer = SignatureProvider.Create(privKey);
         await RegisterPlayer();
         Initialized = true;
+
+        var backpack = await GetBackpacksFromShop();
+        foreach (var b in backpack)
+            Debug.Log($"{b.Key} {b.Value}");
     }
 
     #region  Operations
@@ -241,9 +246,11 @@ public class Blockchain : MonoBehaviour
         return await Client.Query<List<ConsumableShopEntry>>("IShop.get_consumables");
     }
 
-    public async UniTask<List<BackpackShopEntry>> GetBackpacksFromShop()
+    public async UniTask<Dictionary<string, int>> GetBackpacksFromShop()
     {
-        return (await Client.Query<List<BackpackShopEntry>>("IShop.get_backpacks"));
+        var x = await Client.Query<object>("IShop.get_backpacks");
+        Debug.Log(JsonConvert.SerializeObject(x));
+        return await Client.Query<Dictionary<string, int>>("IShop.get_backpacks");
     }
     #endregion
 
@@ -277,14 +284,6 @@ public class Blockchain : MonoBehaviour
     {
         [JsonProperty("consumable")]
         public Consumable Consumable;
-        [JsonProperty("price")]
-        public int Price;
-    }
-
-    public class BackpackShopEntry
-    {
-        [JsonProperty("backpack")]
-        public string Backpack;
         [JsonProperty("price")]
         public int Price;
     }
