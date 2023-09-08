@@ -91,7 +91,7 @@ public class Blockchain : MonoBehaviour
                 .AddSignatureProvider(Signer));
     }
 
-    public async UniTask<TransactionReceipt> UseConsumable(Buffer expedition_id, Consumable item)
+    public async UniTask<TransactionReceipt> UseConsumable(Buffer expeditionId, Consumable item)
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
