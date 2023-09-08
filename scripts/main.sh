@@ -68,6 +68,7 @@ scp -r ${BUILD_PATH} ubuntu@${CLIENT_HOST}:~/client/$VERSION
 ssh ubuntu@${CLIENT_HOST} "sudo docker stop coa-idle-quest && sudo docker rm coa-idle-quest"
 ssh ubuntu@${CLIENT_HOST} "sudo docker build -t coa-idle-quest ~/client/$VERSION"
 ssh ubuntu@${CLIENT_HOST} "sudo docker run --name coa-idle-quest -p 8081:3000 -d coa-idle-quest"
+ssh ubuntu@${CLIENT_HOST} "sudo docker cp coa-idle-quest:/usr/src/app/ /var/www/demo-coa-com/"
 
 echo "#"
 
