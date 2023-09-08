@@ -122,6 +122,14 @@ public class Blockchain : MonoBehaviour
                 .AddSignatureProvider(Signer));
     }
 
+    public async UniTask<TransactionReceipt> SelectExpeditionChallenge(Buffer challengeId)
+    {
+        return await Client.SendUniqueTransaction(Transaction.Build()
+                .AddOperation(AuthOp())
+                .AddOperation(new Operation("IExpedition.select_challenge", challengeId))
+                .AddSignatureProvider(Signer));
+    }
+
     public async UniTask<TransactionReceipt> AdvanceExpedition(Buffer challengeId, ChallengeAction action)
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
@@ -213,9 +221,9 @@ public class Blockchain : MonoBehaviour
         return await Client.Query<List<ExpeditionOverview>>("IExpedition.get_all", ("account_id", AccountId));
     }
 
-    public async UniTask<List<ExpeditionOverview>> GetExpeditionDetails(Buffer expeditionId)
+    public async UniTask<List<Expedition>> GetExpeditionDetails(Buffer expeditionId)
     {
-        return await Client.Query<List<ExpeditionOverview>>("IExpedition.get_details", ("expedition_id", expeditionId));
+        return await Client.Query<List<Expedition>>("IExpedition.get_details", ("expedition_id", expeditionId));
     }
 
     public async UniTask<ChallengeResult> GetChallengeResult(Buffer challengeId)
@@ -265,6 +273,18 @@ public class Blockchain : MonoBehaviour
         public int Price;
     }
 
+    public class Expedition
+    {
+        [JsonProperty("party")]
+        public List<PartyMember> Party;
+        [JsonProperty("challenges")]
+        public List<Challenge> Challenges;
+        [JsonProperty("consumables")]
+        public List<(Consumable, int)> Consumables;
+        [JsonProperty("arrival_at")]
+        public long ArrivalAt;
+    }
+
     public class ExpeditionOverview
     {
         [JsonProperty("id")]
@@ -277,6 +297,8 @@ public class Blockchain : MonoBehaviour
         public List<PartyMember> Party;
         [JsonProperty("active_challenge")]
         public ActiveChallengeOverview ActiveChallenge;
+        [JsonProperty("active_challenge")]
+        public List<ChallengeOverview> NextChallenges;
     }
 
     public class ActiveChallengeOverview
