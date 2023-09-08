@@ -57,8 +57,6 @@ public class Blockchain : MonoBehaviour
         Signer = SignatureProvider.Create(privKey);
         await RegisterPlayer();
         Initialized = true;
-
-        Debug.Log("DONE!");
     }
 
     #region  Operations
