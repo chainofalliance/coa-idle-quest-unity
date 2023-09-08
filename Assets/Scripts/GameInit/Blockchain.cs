@@ -20,7 +20,7 @@ public class Blockchain : MonoBehaviour
 #if LOCAL_NODE
     private static readonly string NodeUri = "http://localhost:7741";
 #else
-    private static readonly string NodeUri = "https://lddgmoj5kh.execute-api.eu-north-1.amazonaws.com/demo"; 
+    private static readonly string NodeUri = "https://coa-demo-postchain.chromia.dev/"; 
 #endif
 
 
@@ -38,6 +38,8 @@ public class Blockchain : MonoBehaviour
 
     async void Start()
     {
+        ChromiaClient.SetTransport(new UnityTransport());
+
         Client = await ChromiaClient.Create(NodeUri, 0);
 
         var privKey = Buffer.From(PlayerPrefs.GetString("privkey"));
@@ -89,11 +91,11 @@ public class Blockchain : MonoBehaviour
                 .AddSignatureProvider(Signer));
     }
 
-    public async UniTask<TransactionReceipt> UseConsumable(Buffer challengeId, Consumable item)
+    public async UniTask<TransactionReceipt> UseConsumable(Buffer expedition_id, Consumable item)
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
-                .AddOperation(new Operation("IExpedition.use_consumable", challengeId, item.ToString()))
+                .AddOperation(new Operation("IExpedition.use_consumable", expedition_id, item.ToString()))
                 .AddSignatureProvider(Signer));
     }
 
@@ -302,6 +304,8 @@ public class Blockchain : MonoBehaviour
         public List<ChallengeOutcome> Outcome;
         [JsonProperty("loot")]
         public List<ChallengeLoot> Loot;
+        [JsonProperty("effects")]
+        public List<Consumable> Effects;
     }
 
     public class ChallengeResult
