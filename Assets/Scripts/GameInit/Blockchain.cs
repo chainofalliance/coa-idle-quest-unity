@@ -13,6 +13,8 @@ public class Blockchain : MonoBehaviour
     public static Blockchain Instance { get; private set; }
     public static ChromiaClient Client { get; private set; }
 
+    public bool Initialized { get; private set; } = false;
+
     private static Buffer AccountId;
     private static SignatureProvider Signer;
 #if LOCAL_NODE
@@ -45,6 +47,7 @@ public class Blockchain : MonoBehaviour
 
         Signer = SignatureProvider.Create(privKey);
         await RegisterPlayer();
+        Initialized = true;
     }
 
     #region  Operations
