@@ -17,29 +17,15 @@ public class Config : ScriptableObject
     public List<BaseHealthCoef> BaseHealthCoefs;
     [SerializeField]
     public List<BaseHealth> BaseHealths;
-
     [SerializeField]
-    public List<TerrainBackground> TerrainBackgrounds;
-
-    [SerializeField]
-    public List<HeroImage> HeroImages;
-
+    public List<ConsumableIcon> ConsumableIcons;
 }
 
 [System.Serializable]
-public class HeroImage
+public class ConsumableIcon
 {
-    public Blockchain.Rarity rarity;
-    public Blockchain.Species species;
-    public Blockchain.Class heroClass;
-    public Sprite image;
-}
-
-[System.Serializable]
-public class TerrainBackground
-{
-    public Blockchain.Terrain terrain;
-    public Sprite background;
+    public Blockchain.Consumable consumableType;
+    public Sprite sprite;
 }
 
 [System.Serializable]

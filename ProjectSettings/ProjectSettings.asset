@@ -617,7 +617,7 @@ PlayerSettings:
   webGLDecompressionFallback: 1
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: LOCAL_NODE
+    Standalone: 
     WebGL: 
   additionalCompilerArguments: {}
   platformArchitecture: {}

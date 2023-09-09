@@ -70,8 +70,9 @@ public class Blockchain : MonoBehaviour
     {
         var authDesc = ToAuthDesc(Signer.PubKey);
         AccountId = ChromiaClient.Hash(authDesc);
-
+        Debug.Log(AccountId);
         var exists = await Client.Query<bool>("IPlayer.does_exist", ("account_id", AccountId));
+
         if (!exists)
         {
             await Client.SendUniqueTransaction(Transaction.Build()
