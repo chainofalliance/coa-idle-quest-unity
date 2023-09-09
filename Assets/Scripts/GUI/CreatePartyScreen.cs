@@ -16,11 +16,12 @@ public class CreatePartyScreen : MonoBehaviour
     [SerializeField] private GameObject PartyPrefab, PartyRoot, HeroPrefab, HeroRoot;
 
     // Start is called before the first frame update
-    void Start()
+    async void Start()
     {
         Entry.onClick.AddListener(OnEntrySelected);
         Shop.onClick.AddListener(OnShopSelected);
-        
+
+        await GetHeroData();
     }
 
     public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Rarity> PartyUpdated;
@@ -43,8 +44,6 @@ public class CreatePartyScreen : MonoBehaviour
     private async void OnReturnFromShop()
     {
         ScreenShop.SetActive(false);
-
-        await GetHeroData();
     }
 
     private async UniTask<List<Blockchain.Hero>> GetHeroData()

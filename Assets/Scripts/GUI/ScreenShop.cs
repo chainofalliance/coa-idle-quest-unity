@@ -34,7 +34,7 @@ public class ScreenShop : MonoBehaviour
         Back.onClick.AddListener(OnBackClicked);
 
         OnHeroPanelOpen();
-  
+
     }
 
     public event Action ReturnBack;
@@ -280,9 +280,11 @@ public class ScreenShop : MonoBehaviour
         await GetConsumableData();
     }
 
-        private async UniTask<long> RefreshShardsAmount()
+    private async UniTask<long> RefreshShardsAmount()
     {
         var result = await Blockchain.Instance.GetShards();
+        ShardsAmount.text = result.ToString();
+
         return result;
     }
 }

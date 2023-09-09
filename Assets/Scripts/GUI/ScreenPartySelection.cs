@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Chromia;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -59,19 +60,26 @@ public class ScreenPartySelection : MonoBehaviour
         createPartyScreen.PartyUpdated += OnPartyUpdated;
     }
 
-    private void OnDetailsClicked()
+    private async void OnDetailsClicked()
     {
         PartyDetailsScreen.SetActive(true);
         List<ConsumableEntry> consumables = new();
         var partyDetailsScreen = PartyDetailsScreen.GetComponent<PartyDetailsScreen>();
         partyDetailsScreen.ReturnBack += OnReturnFromDetails;
         partyDetailsScreen.InitializeParty(SelectedPartyEntry.party, consumables, Config, Rarity.Common);
+
+        var result = await Blockchain.Instance.GetActiveExpeditions();
+        var exp = result.FirstOrDefault();
+        if(exp != null)
+        {
+            partyDetailsScreen.InitializeExpedition(exp);
+        }
     }
 
     private void OnReturnFromDetails()
     {
         SelectedPartyEntry.Deselect();
-
+        PartyDetailsScreen.SetActive(false);
     }
 
     private void OnPartyUpdated(List<Blockchain.Hero> heroes, List<ConsumableEntry> consumables, Rarity rarities)
