@@ -24,6 +24,7 @@ public class BackPackMenu : MonoBehaviour
     private List<GameObject> freeconsumeSlots = new();
 
     private ConsumableEntry selectedConsumable;
+    private BackPackEntry selectedbackpack;
     private int consumableSlots;
 
     public event Action<List<ConsumableEntry>> EquippedReturn;
@@ -157,7 +158,7 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         return response;
     }
 
-    private async void RefreshInventory()
+    private void RefreshInventory()
     {
         for (int i = consumables.Count - 1; i >= 0; i--)
         {
@@ -218,6 +219,7 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
                 continue;
             }
 
+            selectedbackpack = entry;
             var rarity = ConvertStringToRarity(bp.EntryName);
             consumableSlots = config.BackpackSlots.FirstOrDefault(x => x.rarity == rarity).consumableSlots;
 
@@ -252,13 +254,13 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         ClearBackpackSlots();
 
         foreach(var bp in backpacks)
-        {
             bp.Deselect();
-        }
+
+        selectedbackpack = null;
     }
 
     void Update()
     {
-
+        Add.interactable = selectedbackpack != null;
     }
 }
