@@ -12,7 +12,7 @@ public class ScreenShop : MonoBehaviour
 {
     [SerializeField] private Image HeroesNavPanel, ConsumablesNavPanel, BackpacksNavPanel, HeroImage, ConsumableImage;
     [SerializeField] private GameObject HeroPanel, ConsumablesPanel, BackpacksPanel;
-    [SerializeField] private Button Hero, Consumables, Backpacks, Buy, Back;
+    [SerializeField] private Button Hero, Consumables, Backpacks, Buy, Back, Cheatshards;
     [SerializeField] private Sprite ActivePanel, PassivePanel;
     [SerializeField] private TextMeshProUGUI ShardsAmount;
 
@@ -30,6 +30,7 @@ public class ScreenShop : MonoBehaviour
     async void Start()
     {
         Hero.onClick.AddListener(OnHeroPanelOpen);
+        Cheatshards.onClick.AddListener(OnCheat);
         Consumables.onClick.AddListener(OnConsumablePanelOpen);
         Backpacks.onClick.AddListener(OnBackPacksPanelOpen);
         Buy.onClick.AddListener(OnBuyClicked);
@@ -37,6 +38,13 @@ public class ScreenShop : MonoBehaviour
 
         OnHeroPanelOpen();
 
+    }
+
+    private async void OnCheat()
+    {
+        await Blockchain.Instance.CheatShards(500);
+        shardsAmount = await Blockchain.Instance.GetShards();
+        ShardsAmount.text = shardsAmount.ToString();
     }
 
     public event Action ReturnBack;
@@ -295,7 +303,7 @@ public class ScreenShop : MonoBehaviour
             hero.Deselect();
 
         ClearConsumables();
-
+    
         await GetConsumableData();
     }
 

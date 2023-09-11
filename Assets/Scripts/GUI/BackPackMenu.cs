@@ -28,8 +28,9 @@ public class BackPackMenu : MonoBehaviour
 
     private async void OnEquipClicked()
     {
-        await GetBackPackData();
         await GetConsumableData();
+        await GetBackPackData();
+      
     }
 
     private void OnBackClicked()
@@ -40,7 +41,7 @@ public class BackPackMenu : MonoBehaviour
     private async UniTask<Dictionary<string,int>> GetBackPackData()
     {
         var response = await Blockchain.Instance.GetBackpacks();
-        UnityEngine.Debug.Log(response.Count);
+        UnityEngine.Debug.Log("Backpacks " + response.Count);
         //foreach (var backpack in response)
         //{
         //    var backPackEntry = Instantiate(BackpackPrefab, BackpackRoot.transform).GetComponent<BackPackEntry>();
@@ -57,7 +58,7 @@ public class BackPackMenu : MonoBehaviour
     {
 
         var response = await Blockchain.Instance.GetConsumables();
-
+        UnityEngine.Debug.Log("Consumables " + response.Count);
         foreach (var consumable in response)
         {
             var consumableEntry = Instantiate(ConsumablesPrefab, ConsumablesRoot.transform).GetComponent<ConsumableEntry>();
