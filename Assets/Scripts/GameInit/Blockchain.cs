@@ -340,7 +340,7 @@ public class Blockchain : MonoBehaviour
         public List<PartyMember> Party;
         [JsonProperty("active_challenge")]
         public ActiveChallengeOverview ActiveChallenge;
-        [JsonProperty("next_challenge")]
+        [JsonProperty("next")]
         public List<ChallengeOverview> NextChallenges;
     }
 
