@@ -42,6 +42,7 @@ public class Blockchain : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        Debug.Log($"Version: {Application.version}");
     }
 
     async void Start()
@@ -70,7 +71,7 @@ public class Blockchain : MonoBehaviour
     {
         var authDesc = ToAuthDesc(Signer.PubKey);
         AccountId = ChromiaClient.Hash(authDesc);
-        Debug.Log(AccountId);
+        Debug.Log($"AccountId: {AccountId}");
         var exists = await Client.Query<bool>("IPlayer.does_exist", ("account_id", AccountId));
 
         if (!exists)
@@ -251,8 +252,6 @@ public class Blockchain : MonoBehaviour
 
     public async UniTask<List<BackpackShopEntry>> GetBackpacksFromShop()
     {
-        var x = await Client.Query<object>("IShop.get_backpacks");
-        Debug.Log(JsonConvert.SerializeObject(x));
         return await Client.Query<List<BackpackShopEntry>>("IShop.get_backpacks");
     }
     #endregion
@@ -273,6 +272,8 @@ public class Blockchain : MonoBehaviour
         public Species Species;
         [JsonProperty("health")]
         public int Health;
+        [JsonProperty("deployed")]
+        public bool IsDeployed;
     }
 
     public class HeroShopEntry

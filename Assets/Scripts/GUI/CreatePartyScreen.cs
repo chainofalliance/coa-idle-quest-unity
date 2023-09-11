@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -27,6 +26,9 @@ public class CreatePartyScreen : MonoBehaviour
         Back.onClick.AddListener(OnBackSelected);
         Shop.onClick.AddListener(OnShopSelected);
         Backpack.onClick.AddListener(OnBackpackSelected);
+        var shopScreen = ScreenShop.GetComponent<ScreenShop>();
+        shopScreen.ReturnBack += OnReturnFromShop;
+        await GetHeroData();
     }
 
     public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Rarity> PartyUpdated;
@@ -35,6 +37,7 @@ public class CreatePartyScreen : MonoBehaviour
     private void OnBackSelected()
     {
         ReturnClicked?.Invoke();
+        ResetEntries();
     }
 
     private void OnEntrySelected()
@@ -51,36 +54,31 @@ public class CreatePartyScreen : MonoBehaviour
         backPackScreen.EquippedReturn += OnEquippedReturn;
     }
 
-    public async void InjectDependency(List<PartyEntry> parties)
+    private void ResetEntries()
     {
-        createdParties = parties;
-        UnityEngine.Debug.Log("Are parties injected");
-
-        for (int i = heroesInParty.Count - 1; i >= 0; i--)
+        foreach (Transform partyEntry in PartyRoot.transform)
         {
-            heroesInParty[i].Destroy();
-            heroesInParty.RemoveAt(i);
+            Destroy(partyEntry.gameObject);
         }
 
-        for (int i = heroEntries.Count - 1; i >= 0; i--)
+        foreach (Transform heroEntry in HeroRoot.transform)
         {
-            heroEntries[i].Destroy();
-            heroEntries.RemoveAt(i);
+            Destroy(heroEntry.gameObject);
         }
 
-        await GetHeroData();
+        heroEntries.Clear();
+        heroesInParty.Clear();
     }
 
     private void OnShopSelected()
     {
         ScreenShop.SetActive(true);
-        var shopScreen = ScreenShop.GetComponent<ScreenShop>();
-        shopScreen.ReturnBack += OnReturnFromShop;
     }
 
     private async  void OnReturnFromShop()
     {
         ScreenShop.SetActive(false);
+        ResetEntries();
         await GetHeroData();
     }
 
@@ -97,21 +95,12 @@ public class CreatePartyScreen : MonoBehaviour
 
     private async UniTask<List<Blockchain.Hero>> GetHeroData()
     {
-        for (int i = heroEntries.Count - 1; i >= 0; i--)
-        {
-            heroEntries[i].Destroy();
-            heroEntries.RemoveAt(i);
-        }
-
         var response = await Blockchain.Instance.GetHeroes();
 
         foreach (var hero in response)
         {
-            bool isAvailable = true;
             var heroEntry = Instantiate(HeroPrefab, HeroRoot.transform).GetComponent<CharacterEntry>();
-            isAvailable = !createdParties.Any(x => x.party.Any(y => y.Id == hero.Id));
-            UnityEngine.Debug.Log("IsAvailable" + isAvailable);
-            heroEntry.Initialize(hero, Config, false, false, isAvailable);
+            heroEntry.Initialize(hero, Config, false, false, !hero.IsDeployed);
             heroEntry.Selected += OnHeroSelected;
             heroEntries.Add(heroEntry);
         }

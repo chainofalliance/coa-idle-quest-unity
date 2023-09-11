@@ -60,7 +60,6 @@ public class ScreenPartySelection : MonoBehaviour
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
         createPartyScreen.PartyUpdated += OnPartyUpdated;
         createPartyScreen.ReturnClicked += OnReturn;
-        createPartyScreen.InjectDependency(CreatedParties);
     }
 
     private async void OnDetailsClicked()
@@ -94,7 +93,6 @@ public class ScreenPartySelection : MonoBehaviour
     private void OnReturn()
     {
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
-        createPartyScreen.InjectDependency(CreatedParties);
         CreatePartyScreen.SetActive(false);
     }
 

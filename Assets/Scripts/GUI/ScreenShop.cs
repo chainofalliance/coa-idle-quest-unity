@@ -37,7 +37,7 @@ public class ScreenShop : MonoBehaviour
         Back.onClick.AddListener(OnBackClicked);
 
         OnHeroPanelOpen();
-
+        await RefreshShardsAmount();
     }
 
     private async void OnCheat()
@@ -79,6 +79,8 @@ public class ScreenShop : MonoBehaviour
             heroes.Add(heroEntry);
         }
 
+        OnHeroSelected(heroes.First());
+
         return response;
     }
 
@@ -119,8 +121,7 @@ public class ScreenShop : MonoBehaviour
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
-                ClearBackPAcks();
-                await GetBackPackData();
+                await RefreshShardsAmount();
             }
         }
 
@@ -134,6 +135,7 @@ public class ScreenShop : MonoBehaviour
             {
                 ClearHeroes();
                 await GetHeroData();
+                await RefreshShardsAmount();
             }
         }
 
@@ -145,12 +147,10 @@ public class ScreenShop : MonoBehaviour
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
-                ClearConsumables();
-                await GetConsumableData();
+                await RefreshShardsAmount();
             }
         }
 
-        await RefreshShardsAmount();
     }
 
 
@@ -260,12 +260,12 @@ public class ScreenShop : MonoBehaviour
         ClearBackPAcks();
 
         await GetBackPackData();
+
+        OnBackPackSelected(backpacks.First());
     }
 
     private async void OnHeroPanelOpen()
     {
-        await RefreshShardsAmount();
-
         HeroesNavPanel.sprite = ActivePanel;
         ConsumablesNavPanel.sprite = PassivePanel;
         BackpacksNavPanel.sprite = PassivePanel;
@@ -305,6 +305,8 @@ public class ScreenShop : MonoBehaviour
         ClearConsumables();
     
         await GetConsumableData();
+
+        OnConsumableSelected(consumables.First());
     }
 
     private async UniTask<long> RefreshShardsAmount()

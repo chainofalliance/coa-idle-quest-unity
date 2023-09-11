@@ -13,6 +13,8 @@ mkdir -p $BUILD_PATH
 
 LOG_FILE=$BUILD_PATH/build.log
 
+export VERSION_NUMBER_VAR=$VERSION
+
 echo "########################################"
 echo "# Building ${BUILD_NAME}..."
 echo "# Target:  $BUILD_TARGET"
