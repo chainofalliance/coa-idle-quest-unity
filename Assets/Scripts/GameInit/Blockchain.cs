@@ -204,14 +204,14 @@ public class Blockchain : MonoBehaviour
 
     public async UniTask<Dictionary<string, int>> GetBackpacks()
     {
-        return (await Client.Query<List<(string, int)>>("IPlayer.get_backpacks", ("account_id", AccountId)))
-            .ToDictionary(s => s.Item1, s => s.Item2);
+        var backpacks = await Client.Query<List<(string, int)>>("IPlayer.get_backpacks", ("account_id", AccountId));
+        return backpacks == null ? new() : backpacks.ToDictionary(s => s.Item1, s => s.Item2);
     }
 
     public async UniTask<Dictionary<Consumable, int>> GetConsumables()
     {
-        return (await Client.Query<List<(Consumable, int)>>("IPlayer.get_consumables", ("account_id", AccountId)))
-            .ToDictionary(s => s.Item1, s => s.Item2);
+        var consumables = await Client.Query<List<(Consumable, int)>>("IPlayer.get_consumables", ("account_id", AccountId));
+        return consumables == null ? new() : consumables.ToDictionary(s => s.Item1, s => s.Item2);
     }
 
     public async UniTask<long> GetShards()
