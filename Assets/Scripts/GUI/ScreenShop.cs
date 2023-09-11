@@ -113,7 +113,6 @@ public class ScreenShop : MonoBehaviour
 
     private async void OnBuyClicked()
     {
-        Popup.Create($"Buying...", false);
         var backpack = backpacks.FirstOrDefault(x => x.IsSelect == true);
 
         if (backpack != null)
@@ -125,6 +124,10 @@ public class ScreenShop : MonoBehaviour
                 Popup.Create($"Bought {backpack.EntryName}!");
                 await RefreshShardsAmount();
                 return;
+            } 
+            else
+            {
+                Debug.LogError($"{response.Status}: {response.RejectReason}");
             }
         }
 
@@ -142,6 +145,10 @@ public class ScreenShop : MonoBehaviour
                 await RefreshShardsAmount();
                 return;
             }
+            else
+            {
+                Debug.LogError($"{response.Status}: {response.RejectReason}");
+            }
         }
 
         var cons = consumables.FirstOrDefault(x => x.IsSelect == true);
@@ -155,6 +162,10 @@ public class ScreenShop : MonoBehaviour
                 Popup.Create($"Bought {cons.consumableType}!");
                 await RefreshShardsAmount();
                 return;
+            }
+            else
+            {
+                Debug.LogError($"{response.Status}: {response.RejectReason}");
             }
         }
 
