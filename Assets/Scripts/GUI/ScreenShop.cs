@@ -113,6 +113,7 @@ public class ScreenShop : MonoBehaviour
 
     private async void OnBuyClicked()
     {
+        Popup.Create($"Buying...", false);
         var backpack = backpacks.FirstOrDefault(x => x.IsSelect == true);
 
         if (backpack != null)
@@ -121,7 +122,9 @@ public class ScreenShop : MonoBehaviour
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
+                Popup.Create($"Bought {backpack.EntryName}!");
                 await RefreshShardsAmount();
+                return;
             }
         }
 
@@ -133,9 +136,11 @@ public class ScreenShop : MonoBehaviour
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
+                Popup.Create($"Bought hero!");
                 ClearHeroes();
                 await GetHeroData();
                 await RefreshShardsAmount();
+                return;
             }
         }
 
@@ -147,10 +152,13 @@ public class ScreenShop : MonoBehaviour
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
+                Popup.Create($"Bought {cons.consumableType}!");
                 await RefreshShardsAmount();
+                return;
             }
         }
 
+        Popup.Create($"Error!");
     }
 
 
