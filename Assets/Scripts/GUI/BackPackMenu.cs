@@ -117,7 +117,6 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
 
         foreach (var backpack in response)
         {
-            Debug.Log(backpack.Backpack + " backpacks number " + backpack.Amount);
             var backPackEntry = Instantiate(BackpackPrefab, BackPackRoot.transform).GetComponent<BackPackEntry>();
             for (long i = backpack.Amount; i > 0; i--)
             {
@@ -227,15 +226,18 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
 
     private Blockchain.Rarity ConvertStringToRarity(string str)
     {
-        StringComparison comp = StringComparison.OrdinalIgnoreCase;
-        foreach (Blockchain.Rarity suit in (Blockchain.Rarity[])Enum.GetValues(typeof(Blockchain.Rarity)))
+        StringComparison comp = StringComparison.InvariantCultureIgnoreCase;
+        var buf = Blockchain.Rarity.Common;
+
+        foreach (Blockchain.Rarity rarity in (Blockchain.Rarity[])Enum.GetValues(typeof(Blockchain.Rarity)))
         {
-            if (str.Contains(suit.ToString(), comp))
+            if (str.Contains(rarity.ToString(), comp))
             {
-                return suit;
+                buf = rarity;
             }
         }
-        return Blockchain.Rarity.Common;
+
+        return buf;
     }
 
     private async void OnEnable()
