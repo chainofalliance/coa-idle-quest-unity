@@ -16,7 +16,7 @@ public class PartyEntry : MonoBehaviour
     [SerializeField] private GameObject Notification, Active;
     [SerializeField] private GameObject PartyDetailsScreen;
 
-
+    public bool DangerSet => Danger.text != "";
     public List<Blockchain.Hero> party;
     public List<Blockchain.Consumable> partyconsumables;
     public Blockchain.Rarity partyrarity;
@@ -73,7 +73,7 @@ public class PartyEntry : MonoBehaviour
         }
     }
 
-    public async void InitializeDanger()
+    public  void InitializeDanger()
     {
         Array values = Enum.GetValues(typeof(Blockchain.DangerLevel));
         System.Random random = new System.Random();
@@ -88,8 +88,7 @@ public class PartyEntry : MonoBehaviour
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));
         partyrarity = rarity;
         danger = Blockchain.DangerLevel.Harmless;
-        Danger.text = $"{danger} Expedition";
-
+ 
         for(int i = 0; i < heroes.Count; i++)
         {
             heroes[i].Initialize(heroesParty[i], configuration, false, true, true);

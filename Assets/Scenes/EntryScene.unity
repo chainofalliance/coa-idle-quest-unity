@@ -128,6 +128,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5103313383272142025, guid: 0572496913ec940c98aed94469aa20a5, type: 3}
   m_PrefabInstance: {fileID: 547224649}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &217481819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1559830562535087065, guid: 0572496913ec940c98aed94469aa20a5, type: 3}
+  m_PrefabInstance: {fileID: 547224649}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &362401722 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7719694640828148722, guid: f91e0ab6d787d435689e25703c6fac0e, type: 3}
@@ -714,6 +725,7 @@ MonoBehaviour:
   Config: {fileID: 11400000, guid: b7bc7e5a22a6a420d812697832f3ba26, type: 2}
   Entry: {fileID: 1471494927}
   Shop: {fileID: 1197129774}
+  Back: {fileID: 217481819}
   ScreenShop: {fileID: 527871774}
   PartyPrefab: {fileID: 6592083588141564477, guid: a18df74c22d81484e8d77a8e6c4d9f3c, type: 3}
   PartyRoot: {fileID: 184506735}
