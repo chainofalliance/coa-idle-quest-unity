@@ -85,17 +85,17 @@ public class Blockchain : MonoBehaviour
         List<Hero> heroes,
         List<Consumable> items,
         DangerLevel dangerLevel,
-        Rarity backpack
+        string backpack
     )
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
                 .AddOperation(new Operation(
                     "IExpedition.start",
-                    heroes.Select(h => h.Id).ToArray(),
-                    items.Select(c => c.ToString()).ToArray(),
-                    dangerLevel.ToString(),
-                    backpack.ToString()
+                    heroes.Select(h => (object) h.Id).ToArray(),
+                    items.Select(c => (object) c.ToString()).ToArray(),
+                    (int) dangerLevel,
+                    backpack
                 ))
                 .AddSignatureProvider(Signer));
     }

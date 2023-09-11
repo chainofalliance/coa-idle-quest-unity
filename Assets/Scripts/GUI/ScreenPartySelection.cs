@@ -38,7 +38,7 @@ public class ScreenPartySelection : MonoBehaviour
             SelectedPartyEntry.party,
             SelectedPartyEntry.partyconsumables,
             SelectedPartyEntry.danger,
-            SelectedPartyEntry.partyrarity);
+            "");
         Debug.Log(result.Status + "EXP");
 
         SelectedPartyEntry.InitializeExpedition();
