@@ -191,7 +191,7 @@ public class Blockchain : MonoBehaviour
     public async UniTask<TransactionReceipt> CheatShards(int amount)
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
-                .AddOperation(new Operation("IDev.add_shards", amount)));
+                .AddOperation(new Operation("IDev.add_shards", AccountId, amount)));
     }
     #endregion
 
