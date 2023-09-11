@@ -11,7 +11,7 @@ using System;
 public class ScreenShop : MonoBehaviour
 {
     [SerializeField] private Image HeroesNavPanel, ConsumablesNavPanel, BackpacksNavPanel, HeroImage, ConsumableImage;
-    [SerializeField] private GameObject HeroPanel, ConsumablesPanel, BackpacksPanel;
+    [SerializeField] private GameObject HeroPanel, ConsumablesPanel, BackpacksPanel, Shard;
     [SerializeField] private Button Hero, Consumables, Backpacks, Buy, Back, Cheatshards;
     [SerializeField] private Sprite ActivePanel, PassivePanel;
     [SerializeField] private TextMeshProUGUI ShardsAmount;
@@ -103,11 +103,11 @@ public class ScreenShop : MonoBehaviour
 
     void Update()
     {
+        Shard.SetActive(Price.text != "");
     }
 
     private void OnBackClicked()
     {
-        UnityEngine.Debug.Log("OnBack");
         ReturnBack?.Invoke();
     }
 
@@ -160,7 +160,6 @@ public class ScreenShop : MonoBehaviour
 
         Popup.Create($"Error!");
     }
-
 
     private void ClearHeroes()
     {
@@ -268,8 +267,7 @@ public class ScreenShop : MonoBehaviour
         ClearBackPAcks();
 
         await GetBackPackData();
-
-        OnBackPackSelected(backpacks.First());
+        await RefreshShardsAmount();
     }
 
     private async void OnHeroPanelOpen()
@@ -293,6 +291,7 @@ public class ScreenShop : MonoBehaviour
         ClearHeroes();
 
         await GetHeroData();
+        await RefreshShardsAmount();
     }
 
     private async void OnConsumablePanelOpen()
@@ -311,17 +310,18 @@ public class ScreenShop : MonoBehaviour
             hero.Deselect();
 
         ClearConsumables();
-    
-        await GetConsumableData();
 
-        OnConsumableSelected(consumables.First());
+        await GetConsumableData();
+        await RefreshShardsAmount();
     }
 
     private async UniTask<long> RefreshShardsAmount()
     {
         shardsAmount = await Blockchain.Instance.GetShards();
         ShardsAmount.text = shardsAmount.ToString();
-
+        Title.text = "";
+        Price.text = "";
+   
         return shardsAmount;
     }
 }

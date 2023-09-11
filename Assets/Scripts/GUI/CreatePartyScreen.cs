@@ -5,7 +5,6 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using static Blockchain;
 
 public class CreatePartyScreen : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class CreatePartyScreen : MonoBehaviour
     private List<CharacterEntry> heroesInParty = new();
     private List<Blockchain.Hero> heroes = new();
     private List<ConsumableEntry> consumables = new();
+    private Blockchain.Rarity backpackEquiped;
 
     async void Start()
     {
@@ -31,7 +31,7 @@ public class CreatePartyScreen : MonoBehaviour
         await GetHeroData();
     }
 
-    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Rarity> PartyUpdated;
+    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Blockchain.Rarity> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()
@@ -42,8 +42,7 @@ public class CreatePartyScreen : MonoBehaviour
 
     private void OnEntrySelected()
     {
-        List<ConsumableEntry> consumables = new();
-        PartyUpdated?.Invoke(heroes, consumables, Rarity.Common);
+        PartyUpdated?.Invoke(heroes, consumables, backpackEquiped);
     }
 
     private void OnBackpackSelected()
@@ -87,10 +86,11 @@ public class CreatePartyScreen : MonoBehaviour
         BackPackScreen.SetActive(false);
     }
 
-    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped)
+    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped, Blockchain.Rarity backpack)
     {
         BackPackScreen.SetActive(false);
         consumables = consumablesEquipped;
+        backpackEquiped = backpack;
     }
 
     private async UniTask<List<Blockchain.Hero>> GetHeroData()

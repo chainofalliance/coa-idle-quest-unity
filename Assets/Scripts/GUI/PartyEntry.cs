@@ -19,6 +19,7 @@ public class PartyEntry : MonoBehaviour
     public bool DangerSet => Danger.text != "";
     public List<Blockchain.Hero> party;
     public List<Blockchain.Consumable> partyconsumables;
+    public List<ConsumableEntry> consumables;
     public Blockchain.Rarity partyrarity;
     public Blockchain.DangerLevel danger;
 
@@ -34,10 +35,10 @@ public class PartyEntry : MonoBehaviour
 
     private async void OnDetailsClicked()
     {
-        //var result = await Blockchain.Instance.GetActiveExpeditions();
-       // var exp = result.FirstOrDefault();
+        var result = await Blockchain.Instance.GetActiveExpeditions();
+        var exp = result.FirstOrDefault();
 
-       //if(exp != null)
+       if(exp != null)
         {
             DetailsClicked?.Invoke();
         }
@@ -82,9 +83,10 @@ public class PartyEntry : MonoBehaviour
         Danger.text = $"{danger} Expedition";
     }
 
-    public void Initialize(List<Blockchain.Hero> heroesParty, List<ConsumableEntry> consumables, Config configuration, Blockchain.Rarity rarity)
+    public void Initialize(List<Blockchain.Hero> heroesParty, List<ConsumableEntry> consumable, Config configuration, Blockchain.Rarity rarity)
     {
         party = heroesParty;
+        consumables = consumable;
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));
         partyrarity = rarity;
         danger = Blockchain.DangerLevel.Harmless;
