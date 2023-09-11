@@ -141,7 +141,7 @@ public class ScreenShop : MonoBehaviour
                 await GetConsumableData();
             }
         }
-        await Blockchain.Instance.RefreshShop();
+
         await RefreshShardsAmount();
     }
 
