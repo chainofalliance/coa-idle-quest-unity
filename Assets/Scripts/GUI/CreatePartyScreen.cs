@@ -7,7 +7,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using static Blockchain;
-using static UnityEditor.Progress;
 
 public class CreatePartyScreen : MonoBehaviour
 {
