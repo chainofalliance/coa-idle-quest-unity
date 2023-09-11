@@ -12,6 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa910d1f1aac347709d00e61954e7bda, type: 3}
   m_Name: Configuration
   m_EditorClassIdentifier: 
+  BackpackSlots:
+  - rarity: 0
+    consumableSlots: 3
+    lootSlots: 2
+  - rarity: 1
+    consumableSlots: 4
+    lootSlots: 3
+  - rarity: 2
+    consumableSlots: 6
+    lootSlots: 3
+  - rarity: 3
+    consumableSlots: 8
+    lootSlots: 4
+  - rarity: 4
+    consumableSlots: 10
+    lootSlots: 5
   RarityColors:
   - rarity: 0
     color: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}

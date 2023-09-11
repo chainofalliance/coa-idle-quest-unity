@@ -15,10 +15,11 @@ public class CreatePartyScreen : MonoBehaviour
     [SerializeField] private GameObject ScreenShop,BackPackScreen;
     [SerializeField] private GameObject PartyPrefab, PartyRoot, HeroPrefab, HeroRoot;
 
-    private List<PartyEntry> createdParties;
-    private List<CharacterEntry> heroEntries = new List<CharacterEntry>();
-    private List<CharacterEntry> heroesInParty = new List<CharacterEntry>();
+    private List<PartyEntry> createdParties = new();
+    private List<CharacterEntry> heroEntries = new();
+    private List<CharacterEntry> heroesInParty = new();
     private List<Blockchain.Hero> heroes = new();
+    private List<ConsumableEntry> consumables = new();
 
     async void Start()
     {
@@ -47,6 +48,7 @@ public class CreatePartyScreen : MonoBehaviour
         BackPackScreen.SetActive(true);
         var backPackScreen = BackPackScreen.GetComponent<BackPackMenu>();
         backPackScreen.ReturnBack += OnReturnFromBackPack;
+        backPackScreen.EquippedReturn += OnEquippedReturn;
     }
 
     public async void InjectDependency(List<PartyEntry> parties)
@@ -76,18 +78,31 @@ public class CreatePartyScreen : MonoBehaviour
         shopScreen.ReturnBack += OnReturnFromShop;
     }
 
-    private async void OnReturnFromShop()
+    private async  void OnReturnFromShop()
     {
         ScreenShop.SetActive(false);
+        await GetHeroData();
     }
 
-    private async void OnReturnFromBackPack()
+    private void OnReturnFromBackPack()
     {
         BackPackScreen.SetActive(false);
     }
 
+    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped)
+    {
+        BackPackScreen.SetActive(false);
+        consumables = consumablesEquipped;
+    }
+
     private async UniTask<List<Blockchain.Hero>> GetHeroData()
     {
+        for (int i = heroEntries.Count - 1; i >= 0; i--)
+        {
+            heroEntries[i].Destroy();
+            heroEntries.RemoveAt(i);
+        }
+
         var response = await Blockchain.Instance.GetHeroes();
 
         foreach (var hero in response)
@@ -104,7 +119,7 @@ public class CreatePartyScreen : MonoBehaviour
         return response;
     }
 
-    private async void OnHeroDeleted(CharacterEntry hero)
+    private void OnHeroDeleted(CharacterEntry hero)
     {
         for (int i = heroesInParty.Count - 1; i >= 0; i--)
         {

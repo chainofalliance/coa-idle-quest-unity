@@ -54,7 +54,7 @@ public class PartyDetailsScreen : MonoBehaviour
         Id = exp.Id;
         //ChallengeCompleted.text = $" A {exp.ActiveChallenge.Challenge.Difficulty} {exp.ActiveChallenge.Challenge.Type} challenge, happens in {exp.ActiveChallenge.Challenge.Terrain}, {exp.ActiveChallenge.Challenge.ClassAdvantage} has an advantage.";
         ChallengeCompleted.text = $" A {Blockchain.ChallengeDifficulty.Hard} {Blockchain.ChallengeType.Fight} challenge, happens in {Blockchain.Terrain.Savannah}";
-        ChallengeOverview.text = $" A {exp.ActiveChallenge.Challenge} {exp.ActiveChallenge.Challenge.Type} challenge, happens in {exp.ActiveChallenge.Challenge.Terrain}, {exp.ActiveChallenge.Challenge.ClassAdvantage} has an advantage.";
+        //ChallengeOverview.text = $" A {exp.ActiveChallenge.Challenge} {exp.ActiveChallenge.Challenge.Type} challenge, happens in {exp.ActiveChallenge.Challenge.Terrain}, {exp.ActiveChallenge.Challenge.ClassAdvantage} has an advantage.";
 
          dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(exp.ActiveChallenge.ArrivalAt).ToLocalTime();

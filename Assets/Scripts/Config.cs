@@ -6,6 +6,8 @@ using UnityEngine;
 public class Config : ScriptableObject
 {
     [SerializeField]
+    public List<BackpackSlots> BackpackSlots;
+    [SerializeField]
     public List<RarityColor> RarityColors;
     [SerializeField]
     public List<HeroRarityIcon> HeroRarityIcons;
@@ -22,6 +24,15 @@ public class Config : ScriptableObject
     [SerializeField]
     public List<HeroImage> HeroImages;
 }
+
+[System.Serializable]
+public class BackpackSlots
+{
+    public Blockchain.Rarity rarity;
+    public int consumableSlots;
+    public int lootSlots;
+}
+
 
 [System.Serializable]
 public class ConsumableIcon

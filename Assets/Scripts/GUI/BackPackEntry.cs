@@ -20,7 +20,7 @@ public class BackPackEntry : MonoBehaviour, IEntry
         Entry.onClick.AddListener(OnBackPackSelected);
     }
 
-    public void Initialize(string name, int price)
+    public void Initialize(string name, int price = default)
     {
         Name.text = name;
         EntryName = name;
