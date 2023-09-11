@@ -10,7 +10,7 @@ using System;
 
 public class ScreenShop : MonoBehaviour
 {
-    [SerializeField] private Image HeroesNavPanel, ConsumablesNavPanel, BackpacksNavPanel;
+    [SerializeField] private Image HeroesNavPanel, ConsumablesNavPanel, BackpacksNavPanel, HeroImage, ConsumableImage;
     [SerializeField] private GameObject HeroPanel, ConsumablesPanel, BackpacksPanel;
     [SerializeField] private Button Hero, Consumables, Backpacks, Buy, Back;
     [SerializeField] private Sprite ActivePanel, PassivePanel;
@@ -24,6 +24,8 @@ public class ScreenShop : MonoBehaviour
     private List<BackPackEntry> backpacks = new();
     private List<CharacterEntry> heroes = new();
     private List<ConsumableEntry> consumables = new();
+
+    private long shardsAmount;
 
     async void Start()
     {
@@ -105,7 +107,7 @@ public class ScreenShop : MonoBehaviour
 
         if (backpack != null)
         {
-            var response = await Blockchain.Instance.BuyBackpack(backpack.BackPackname);
+            var response = await Blockchain.Instance.BuyBackpack(backpack.EntryName);
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
@@ -118,7 +120,7 @@ public class ScreenShop : MonoBehaviour
 
         if (hero != null)
         {
-            var response = await Blockchain.Instance.BuyHero(hero.HeroID, hero.HeroName);
+            var response = await Blockchain.Instance.BuyHero(hero.HeroID, hero.EntryName);
 
             if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
             {
@@ -171,22 +173,34 @@ public class ScreenShop : MonoBehaviour
         }
     }
 
+    private void ClearList(List<IEntry> entries)
+    {
+        for (int i = entries.Count - 1; i >= 0; i--)
+        {
+            entries[i].Destroy();
+            entries.RemoveAt(i);
+        }
+    }
+
     private void OnBackPackSelected(BackPackEntry entry)
     {
-        foreach (var bp in backpacks)
+        foreach (IEntry bp in backpacks)
         {
             if (bp != entry)
             {
                 bp.Deselect();
                 continue;
             }
-            Title.text = entry.BackPackname;
-            Price.text = entry.BackPackprice.ToString();
+            Title.text = entry.EntryName;
+            Price.text = entry.Price.ToString();
+
+            Buy.interactable = shardsAmount >= entry.Price;
         }
     }
 
     private void OnHeroSelected(CharacterEntry hero)
     {
+        HeroImage.sprite = hero.HeroImage;
         foreach (var heroentry in heroes)
         {
             if (heroentry != hero)
@@ -194,13 +208,16 @@ public class ScreenShop : MonoBehaviour
                 heroentry.Deselect();
                 continue;
             }
-            Title.text = hero.HeroName;
+            Title.text = hero.EntryName;
             Price.text = hero.Price.ToString();
+
+            Buy.interactable = shardsAmount >= hero.Price;
         }
     }
 
     private void OnConsumableSelected(ConsumableEntry entry)
     {
+        ConsumableImage.sprite = entry.Image;
         foreach (var consumable in consumables)
         {
             if (consumable != entry)
@@ -209,8 +226,10 @@ public class ScreenShop : MonoBehaviour
                 continue;
             }
 
-            Title.text = entry.consumableType.ToString();
-            Price.text = entry.ConsumablePrice.ToString();
+            Title.text = entry.EntryName.ToString();
+            Price.text = entry.Price.ToString();
+
+            Buy.interactable = shardsAmount >= entry.Price;
         }
     }
 
@@ -282,9 +301,9 @@ public class ScreenShop : MonoBehaviour
 
     private async UniTask<long> RefreshShardsAmount()
     {
-        var result = await Blockchain.Instance.GetShards();
-        ShardsAmount.text = result.ToString();
+        shardsAmount = await Blockchain.Instance.GetShards();
+        ShardsAmount.text = shardsAmount.ToString();
 
-        return result;
+        return shardsAmount;
     }
 }

@@ -3,15 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BackPackEntry : MonoBehaviour//, Buyable
+public class BackPackEntry : MonoBehaviour, IEntry
 {
     [SerializeField] private GameObject Active;
     [SerializeField] private Button Entry;
     [SerializeField] private TextMeshProUGUI Name;
 
-    public string BackPackname { get; set; }
+    public string EntryName { get; set; }
     public bool IsSelect { get; set; }
-    public int BackPackprice { get; set; }
+    public long Price { get; set; }
 
     public event Action<BackPackEntry> Selected;
 
@@ -23,8 +23,8 @@ public class BackPackEntry : MonoBehaviour//, Buyable
     public void Initialize(string name, int price)
     {
         Name.text = name;
-        BackPackname = name;
-        BackPackprice = price;
+        EntryName = name;
+        Price = price;
     }
 
     // Update is called once per frame

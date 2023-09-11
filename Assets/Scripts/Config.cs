@@ -19,6 +19,8 @@ public class Config : ScriptableObject
     public List<BaseHealth> BaseHealths;
     [SerializeField]
     public List<ConsumableIcon> ConsumableIcons;
+    [SerializeField]
+    public List<HeroImage> HeroImages;
 }
 
 [System.Serializable]
@@ -69,4 +71,13 @@ public class BaseHealth
 {
     public Blockchain.Class classType;
     public int health;
+}
+
+[System.Serializable]
+public class HeroImage
+{
+    public Blockchain.Class classType;
+    public Blockchain.Rarity rarity;
+    public Blockchain.Species species;
+    public Sprite icon;
 }

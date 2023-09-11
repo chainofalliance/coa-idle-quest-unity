@@ -76,117 +76,421 @@ MonoBehaviour:
     health: 100
   - classType: 4
     health: 100
-  TerrainBackgrounds:
-  - terrain: 0
-    background: {fileID: 21300000, guid: b3eba140d70e346e3ae9e18fb235e92a, type: 3}
-  - terrain: 1
-    background: {fileID: 21300000, guid: 9b7f94f51ac2a457b8a894c236cf899f, type: 3}
-  - terrain: 2
-    background: {fileID: 21300000, guid: fd5f415964c184683b5351aad95b5ec8, type: 3}
-  - terrain: 3
-    background: {fileID: 21300000, guid: 0e8386ef6daaa42be81bf459886fc521, type: 3}
+  ConsumableIcons:
+  - consumableType: 0
+    sprite: {fileID: 21300000, guid: e977f67478e9741a1b63ab4ce2b96433, type: 3}
+  - consumableType: 1
+    sprite: {fileID: 21300000, guid: 47903685e68eb4b30a5279740ed7ad96, type: 3}
+  - consumableType: 2
+    sprite: {fileID: 21300000, guid: c9954126034634683a79e7213278f470, type: 3}
+  - consumableType: 3
+    sprite: {fileID: 21300000, guid: 3e394ae17cf7c425d9565df72da784da, type: 3}
+  - consumableType: 4
+    sprite: {fileID: 21300000, guid: 3e394ae17cf7c425d9565df72da784da, type: 3}
+  - consumableType: 5
+    sprite: {fileID: 21300000, guid: ebb78bc6f5d6a4f63929dcbe3b3d62a7, type: 3}
+  - consumableType: 6
+    sprite: {fileID: 21300000, guid: 23b793c5ad48d47f698a15bb4dd3df95, type: 3}
+  - consumableType: 7
+    sprite: {fileID: 21300000, guid: 5e9a7bfcb5eb848ec8b1a871ffb88044, type: 3}
+  - consumableType: 8
+    sprite: {fileID: 21300000, guid: 209941774f9524f86990b23d5e47badf, type: 3}
+  - consumableType: 9
+    sprite: {fileID: 21300000, guid: f9dc8692dbb404e3ab8279c19c4dba10, type: 3}
   HeroImages:
-  - rarity: 0
+  - classType: 0
+    rarity: 0
+    species: 1
+    icon: {fileID: 934092181, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 0
+    rarity: 1
+    species: 1
+    icon: {fileID: 666706804, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 0
+    rarity: 2
+    species: 1
+    icon: {fileID: 1536413328, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 0
+    rarity: 3
+    species: 1
+    icon: {fileID: -328151623, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 0
+    rarity: 4
+    species: 1
+    icon: {fileID: -230665338, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 1
+    rarity: 0
+    species: 1
+    icon: {fileID: -440599473, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 1
+    rarity: 1
+    species: 1
+    icon: {fileID: -1676644056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 1
+    rarity: 2
+    species: 1
+    icon: {fileID: 635491602, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 1
+    rarity: 3
+    species: 1
+    icon: {fileID: -972118569, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 1
+    rarity: 4
+    species: 1
+    icon: {fileID: -652155741, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 2
+    rarity: 0
+    species: 1
+    icon: {fileID: -1109805006, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 2
+    rarity: 1
+    species: 1
+    icon: {fileID: -1235041394, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 2
+    rarity: 2
+    species: 1
+    icon: {fileID: -199706133, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 2
+    rarity: 3
+    species: 1
+    icon: {fileID: 1099948868, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 2
+    rarity: 4
+    species: 1
+    icon: {fileID: -589381419, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 3
+    rarity: 0
+    species: 1
+    icon: {fileID: -1574077078, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 3
+    rarity: 1
+    species: 1
+    icon: {fileID: 1642750407, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 3
+    rarity: 2
+    species: 1
+    icon: {fileID: 1224611263, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 3
+    rarity: 3
+    species: 1
+    icon: {fileID: -372106745, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 3
+    rarity: 4
+    species: 1
+    icon: {fileID: -1059296008, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 0
+    species: 1
+    icon: {fileID: 597243807, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 1
+    species: 1
+    icon: {fileID: -2008400056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 2
+    species: 1
+    icon: {fileID: 1687679648, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 3
+    species: 1
+    icon: {fileID: -327673472, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 4
+    species: 1
+    icon: {fileID: -135415149, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+  - classType: 4
+    rarity: 0
     species: 0
-    heroClass: 0
-    image: {fileID: 0}
-  - rarity: 0
-    species: 1
-    heroClass: 0
-    image: {fileID: 934092181, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 0
-    species: 1
-    heroClass: 1
-    image: {fileID: -440599473, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 0
-    species: 1
-    heroClass: 2
-    image: {fileID: -1109805006, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 0
-    species: 1
-    heroClass: 3
-    image: {fileID: -1574077078, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 0
-    species: 1
-    heroClass: 4
-    image: {fileID: 597243807, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 1
-    species: 1
-    heroClass: 0
-    image: {fileID: 666706804, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 1
-    species: 1
-    heroClass: 1
-    image: {fileID: -1676644056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 1
-    species: 1
-    heroClass: 2
-    image: {fileID: -1235041394, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 1
-    species: 1
-    heroClass: 3
-    image: {fileID: 1642750407, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 1
-    species: 1
-    heroClass: 4
-    image: {fileID: -2008400056, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 2
-    species: 1
-    heroClass: 0
-    image: {fileID: 1536413328, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 2
-    species: 1
-    heroClass: 1
-    image: {fileID: 635491602, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 2
-    species: 1
-    heroClass: 2
-    image: {fileID: -199706133, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 2
-    species: 1
-    heroClass: 3
-    image: {fileID: 1224611263, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 2
-    species: 1
-    heroClass: 4
-    image: {fileID: 1687679648, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 3
-    species: 1
-    heroClass: 0
-    image: {fileID: -328151623, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 3
-    species: 1
-    heroClass: 1
-    image: {fileID: -972118569, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 3
-    species: 1
-    heroClass: 2
-    image: {fileID: 1099948868, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 3
-    species: 1
-    heroClass: 3
-    image: {fileID: -372106745, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 3
-    species: 1
-    heroClass: 4
-    image: {fileID: -327673472, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 4
-    species: 1
-    heroClass: 0
-    image: {fileID: -230665338, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 4
-    species: 1
-    heroClass: 1
-    image: {fileID: -652155741, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 4
-    species: 1
-    heroClass: 2
-    image: {fileID: -589381419, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 4
-    species: 1
-    heroClass: 3
-    image: {fileID: -1059296008, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
-  - rarity: 4
-    species: 1
-    heroClass: 4
-    image: {fileID: -135415149, guid: a60a4d2c3549b46bbb383b546957a286, type: 3}
+    icon: {fileID: -941600265, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 4
+    rarity: 1
+    species: 0
+    icon: {fileID: 961626789, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 4
+    rarity: 2
+    species: 0
+    icon: {fileID: 961626789, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 4
+    rarity: 3
+    species: 0
+    icon: {fileID: 36502629, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 4
+    rarity: 4
+    species: 0
+    icon: {fileID: 1295293776, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 0
+    species: 0
+    icon: {fileID: -1115017675, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 1
+    species: 0
+    icon: {fileID: -426660440, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 2
+    species: 0
+    icon: {fileID: 771627177, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 3
+    species: 0
+    icon: {fileID: -1779533203, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 4
+    species: 0
+    icon: {fileID: 481579904, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 1
+    rarity: 0
+    species: 0
+    icon: {fileID: -218687146, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 1
+    rarity: 1
+    species: 0
+    icon: {fileID: 63603811, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 1
+    rarity: 2
+    species: 0
+    icon: {fileID: -455256631, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 1
+    rarity: 3
+    species: 0
+    icon: {fileID: -1913125175, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 1
+    rarity: 4
+    species: 0
+    icon: {fileID: 1396510204, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 2
+    rarity: 0
+    species: 0
+    icon: {fileID: 563707368, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 2
+    rarity: 1
+    species: 0
+    icon: {fileID: 898428800, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 2
+    rarity: 2
+    species: 0
+    icon: {fileID: 810118347, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 2
+    rarity: 3
+    species: 0
+    icon: {fileID: -1764248161, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 3
+    rarity: 0
+    species: 0
+    icon: {fileID: -656794903, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 3
+    rarity: 1
+    species: 0
+    icon: {fileID: -704895445, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 3
+    rarity: 2
+    species: 0
+    icon: {fileID: -1401782174, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 3
+    rarity: 3
+    species: 0
+    icon: {fileID: 1244996952, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 3
+    rarity: 4
+    species: 0
+    icon: {fileID: 2000475243, guid: daac61f5cbe434745a6610d0ece2851c, type: 3}
+  - classType: 0
+    rarity: 0
+    species: 2
+    icon: {fileID: -1949863500, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 0
+    rarity: 1
+    species: 2
+    icon: {fileID: 211405375, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 0
+    rarity: 2
+    species: 2
+    icon: {fileID: 1245409767, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 0
+    rarity: 3
+    species: 2
+    icon: {fileID: -1356789822, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 0
+    rarity: 4
+    species: 2
+    icon: {fileID: 901259914, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 1
+    rarity: 0
+    species: 2
+    icon: {fileID: -222085390, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 1
+    rarity: 1
+    species: 2
+    icon: {fileID: 1070371941, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 1
+    rarity: 2
+    species: 2
+    icon: {fileID: 599320002, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 1
+    rarity: 3
+    species: 2
+    icon: {fileID: -173533801, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 1
+    rarity: 4
+    species: 2
+    icon: {fileID: -1919049676, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 2
+    rarity: 0
+    species: 2
+    icon: {fileID: -544030090, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 2
+    rarity: 1
+    species: 2
+    icon: {fileID: 1475375683, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 2
+    rarity: 2
+    species: 2
+    icon: {fileID: 233419919, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 2
+    rarity: 3
+    species: 2
+    icon: {fileID: -497743012, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 2
+    rarity: 4
+    species: 2
+    icon: {fileID: 1617625563, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 3
+    rarity: 0
+    species: 2
+    icon: {fileID: 1543243432, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 3
+    rarity: 1
+    species: 2
+    icon: {fileID: 1182200884, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 3
+    rarity: 2
+    species: 2
+    icon: {fileID: 518349713, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 3
+    rarity: 3
+    species: 2
+    icon: {fileID: 154309433, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 3
+    rarity: 4
+    species: 2
+    icon: {fileID: 1452403783, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 0
+    species: 2
+    icon: {fileID: 1805632457, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 1
+    species: 2
+    icon: {fileID: 1509019464, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 2
+    species: 2
+    icon: {fileID: 683515918, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 3
+    species: 2
+    icon: {fileID: 1261241121, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 4
+    species: 2
+    icon: {fileID: 1681685071, guid: a9632be2230894f4188b271ae8eb3c47, type: 3}
+  - classType: 4
+    rarity: 0
+    species: 3
+    icon: {fileID: 161255461, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 4
+    rarity: 1
+    species: 3
+    icon: {fileID: 791346723, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 4
+    rarity: 2
+    species: 3
+    icon: {fileID: -1364436701, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 4
+    rarity: 3
+    species: 3
+    icon: {fileID: -111817555, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 4
+    rarity: 4
+    species: 3
+    icon: {fileID: 222244003, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 3
+    rarity: 0
+    species: 3
+    icon: {fileID: 276792509, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 3
+    rarity: 1
+    species: 3
+    icon: {fileID: 1999853799, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 3
+    rarity: 2
+    species: 3
+    icon: {fileID: 834714223, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 3
+    rarity: 3
+    species: 3
+    icon: {fileID: 203921949, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 3
+    rarity: 4
+    species: 3
+    icon: {fileID: -1644610380, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 2
+    rarity: 0
+    species: 3
+    icon: {fileID: 2135160718, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 2
+    rarity: 1
+    species: 3
+    icon: {fileID: 1765170843, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 2
+    rarity: 2
+    species: 3
+    icon: {fileID: -595291525, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 2
+    rarity: 3
+    species: 3
+    icon: {fileID: -1093973326, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 2
+    rarity: 4
+    species: 3
+    icon: {fileID: -755138085, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 1
+    rarity: 0
+    species: 3
+    icon: {fileID: -1541107255, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 1
+    rarity: 1
+    species: 3
+    icon: {fileID: -1924995899, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 1
+    rarity: 2
+    species: 3
+    icon: {fileID: -545926180, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 1
+    rarity: 3
+    species: 3
+    icon: {fileID: -457555909, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 1
+    rarity: 4
+    species: 3
+    icon: {fileID: 2113932166, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 0
+    rarity: 0
+    species: 3
+    icon: {fileID: 1021060725, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 0
+    rarity: 1
+    species: 3
+    icon: {fileID: 1860405934, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 0
+    rarity: 2
+    species: 3
+    icon: {fileID: 706475484, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 0
+    rarity: 3
+    species: 3
+    icon: {fileID: 1800558724, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}
+  - classType: 0
+    rarity: 4
+    species: 3
+    icon: {fileID: 713808033, guid: 636d1bea5592742ebbbe2d1491e3edca, type: 3}

@@ -7,7 +7,7 @@ using System.Linq;
 using static Blockchain;
 
 
-public class CharacterEntry : MonoBehaviour
+public class CharacterEntry : MonoBehaviour, IEntry
 {
     [SerializeField] private Image RaceIcon;
     [SerializeField] private TextMeshProUGUI Name;
@@ -20,8 +20,9 @@ public class CharacterEntry : MonoBehaviour
     [SerializeField] private Button Entry;
 
     public Chromia.Buffer HeroID { get; set; }
-    public string HeroName { get; set; }
+    public string EntryName{ get; set; }
     public long Price { get; set; }
+    public Sprite HeroImage { get; set; }
     public bool IsSelect { get; set; }
     public event Action<CharacterEntry> Selected;
 
@@ -48,7 +49,7 @@ public class CharacterEntry : MonoBehaviour
         Price = price;
         RaceIcon.sprite = configuration.RaceIcons.FirstOrDefault(x => x.species == hero.Species).icon;
         Name.text = hero.Name;
-        HeroName = $"{hero.Rarity} {hero.Species} {hero.Class}";
+        EntryName = $"{hero.Rarity} {hero.Species} {hero.Class}";
         HeroID = hero.Id;
         var fullBaseHealth = configuration.BaseHealths.FirstOrDefault(x => x.classType == hero.Class).health;
         var healthCoef = configuration.BaseHealthCoefs.FirstOrDefault(x => x.rarity == hero.Rarity).coef;
@@ -57,6 +58,8 @@ public class CharacterEntry : MonoBehaviour
         HealthString.text = $"{hero.Health}/{fullRarityHealth}";
         RarityIcon.sprite = configuration.HeroRarityIcons.FirstOrDefault(x => x.rarity == hero.Rarity).heroRarity;
         ClassIcon.sprite = configuration.ClassIcons.FirstOrDefault(x => x.heroClass == hero.Class).icon;
+
+        HeroImage = configuration.HeroImages.FirstOrDefault(x => x.rarity == hero.Rarity && x.species == hero.Species && x.classType == hero.Class).icon;
     }
 
     public void Destroy()
