@@ -187,6 +187,12 @@ public class Blockchain : MonoBehaviour
                 .AddOperation(new Operation("IShop.buy_backpack", backpackName))
                 .AddSignatureProvider(Signer));
     }
+
+    public async UniTask<TransactionReceipt> CheatShards(int amount)
+    {
+        return await Client.SendUniqueTransaction(Transaction.Build()
+                .AddOperation(new Operation("IDev.add_shards", amount)));
+    }
     #endregion
 
     #region Queries
