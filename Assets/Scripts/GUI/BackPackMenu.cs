@@ -39,12 +39,12 @@ public class BackPackMenu : MonoBehaviour
         await GetBackPackData();
     }
 
-    private async void OnEquipClicked()
+    private void OnEquipClicked()
     {
         EquippedReturn?.Invoke(backPackconsumables);
     }
 
-    private async void OnAddClicked()
+    private void OnAddClicked()
     {
         if (freeconsumeSlots.Count <= 0 || selectedConsumable == null)
             return;
@@ -78,10 +78,8 @@ public class BackPackMenu : MonoBehaviour
         }
     }
 
-
 private async void RemoveConsumableFromInventory(ConsumableEntry entry)
     {
-     
         var response = await Blockchain.Instance.GetConsumables();
         var slotsCount = 40;
 
@@ -94,12 +92,9 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
                 CheckInventoryList(response, i, consumable);
             }
         }
-      
 
         foreach (var consumable in response)
         {
-         
-
             slotsCount--;
             var consumableEntry = Instantiate(ConsumablesPrefab, InventoryRoot.transform).GetComponent<ConsumableEntry>();
 
@@ -253,8 +248,13 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
     private async void OnEnable()
     {
         RefreshInventory();
-
         await GetConsumableData();
+        ClearBackpackSlots();
+
+        foreach(var bp in backpacks)
+        {
+            bp.Deselect();
+        }
     }
 
     void Update()

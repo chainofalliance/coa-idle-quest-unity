@@ -65,6 +65,11 @@ public class ScreenPartySelection : MonoBehaviour
 
     private async void OnDetailsClicked()
     {
+        if(SelectedPartyEntry.DangerSet == false)
+        {
+            return;
+        }
+
         var result = await Blockchain.Instance.GetActiveExpeditions();
         var exp = result.FirstOrDefault();
         if (SelectedPartyEntry == null || exp == null)
@@ -120,10 +125,8 @@ public class ScreenPartySelection : MonoBehaviour
         }
 
         SelectedPartyEntry = entry;
+
         SelectedPartyEntry.DetailsClicked += OnDetailsClicked;
-
-        // Update is called once per frame
-
     }
 
     void Update()
