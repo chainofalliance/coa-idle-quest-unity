@@ -176,7 +176,7 @@ public class Blockchain : MonoBehaviour
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
-                .AddOperation(new Operation("IShop.buy_consumable", item.ToString()))
+                .AddOperation(new Operation("IShop.buy_consumable", (int) item))
                 .AddSignatureProvider(Signer));
     }
 
