@@ -19,7 +19,7 @@ public class ScreenPartySelection : MonoBehaviour
 
     private List<PartyEntry> CreatedParties = new List<PartyEntry>();
     private PartyEntry SelectedPartyEntry;
-    // Start is called before the first frame update
+
     void Start()
     {
         StartExpedition.onClick.AddListener(OnStarted);
@@ -77,10 +77,10 @@ public class ScreenPartySelection : MonoBehaviour
         }
 
         PartyDetailsScreen.SetActive(true);
-        List<ConsumableEntry> consumables = new();
+      
         var partyDetailsScreen = PartyDetailsScreen.GetComponent<PartyDetailsScreen>();
         partyDetailsScreen.ReturnBack += OnReturnFromDetails;
-        partyDetailsScreen.InitializeParty(SelectedPartyEntry.party, consumables, Config, Rarity.Common);
+        partyDetailsScreen.InitializeParty(SelectedPartyEntry.party, SelectedPartyEntry.consumables, Config, Rarity.Common);
         partyDetailsScreen.InitializeExpedition(exp);
 
     }
@@ -96,19 +96,18 @@ public class ScreenPartySelection : MonoBehaviour
         CreatePartyScreen.SetActive(false);
     }
 
-    private void OnPartyUpdated(List<Blockchain.Hero> heroes, List<ConsumableEntry> consumables, Rarity rarities)
+    private void OnPartyUpdated(List<Blockchain.Hero> heroes, List<ConsumableEntry> consumables, Rarity backpack)
     {
         CreatePartyScreen.SetActive(false);
 
         var partyEntry = Instantiate(PartyPrefab, PartyRoot.transform).GetComponent<PartyEntry>();
 
-        partyEntry.Initialize(heroes, consumables, Config, Rarity.Common);
+        partyEntry.Initialize(heroes, consumables, Config, backpack);
         partyEntry.Selected += OnSelected;
 
         if (CreatedParties.Contains(partyEntry) == false)
         {
             CreatedParties.Add(partyEntry);
-            Debug.Log(CreatedParties);
         }
 
     }

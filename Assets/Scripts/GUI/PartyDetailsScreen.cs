@@ -13,7 +13,10 @@ public class PartyDetailsScreen : MonoBehaviour
 {
     [SerializeField] private Button Back, Use, Return;
     [SerializeField] private TextMeshProUGUI ShardsAmount, ChallengeOverview, ChallengeCompleted;
+    [SerializeField] private TextMeshProUGUI OptionOne, OptionTwo;
+    [SerializeField] private Button OptionOneButton, OptionTwoButton;
     [SerializeField] private GameObject HeroPrefab, HeroRoot;
+    [SerializeField] private TextMeshProUGUI Timer;
 
     private TimeSpan timeDifference;
     public Chromia.Buffer Id;
@@ -22,12 +25,15 @@ public class PartyDetailsScreen : MonoBehaviour
     public Blockchain.Rarity partyrarity;
     DateTime dateTime;
     public event Action ReturnBack;
+    private ExpeditionOverview Expedition;
     // Start is called before the first frame update
     void Start()
     {
         Back.onClick.AddListener(OnBackClicked);
         Use.onClick.AddListener(OnUseClicked);
         Use.onClick.AddListener(OnReturn);
+        OptionOneButton.onClick.AddListener(OnFirstClicked);
+        OptionTwoButton.onClick.AddListener(OnSecondClicked);
     }
 
     private async void OnReturn()
@@ -49,14 +55,18 @@ public class PartyDetailsScreen : MonoBehaviour
         }
     }
 
-    public void InitializeExpedition(ExpeditionOverview exp)
+    public async void InitializeExpedition(ExpeditionOverview exp)
     {
+        Expedition = exp;
         Id = exp.Id;
-        //ChallengeCompleted.text = $" A {exp.ActiveChallenge.Challenge.Difficulty} {exp.ActiveChallenge.Challenge.Type} challenge, happens in {exp.ActiveChallenge.Challenge.Terrain}, {exp.ActiveChallenge.Challenge.ClassAdvantage} has an advantage.";
+   
         ChallengeCompleted.text = $" A {Blockchain.ChallengeDifficulty.Hard} {Blockchain.ChallengeType.Fight} challenge, happens in {Blockchain.Terrain.Savannah}";
-        //ChallengeOverview.text = $" A {exp.ActiveChallenge.Challenge} {exp.ActiveChallenge.Challenge.Type} challenge, happens in {exp.ActiveChallenge.Challenge.Terrain}, {exp.ActiveChallenge.Challenge.ClassAdvantage} has an advantage.";
 
-         dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        OptionOne.text = exp.NextChallenges.First().Type.ToString();
+        OptionTwo.text = exp.NextChallenges.ElementAt(1).Type.ToString();
+
+
+        dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(exp.ActiveChallenge.ArrivalAt).ToLocalTime();
         timeDifference = dateTime - DateTime.UtcNow;
     }
@@ -67,6 +77,16 @@ public class PartyDetailsScreen : MonoBehaviour
     }
 
     private async void OnUseClicked()
+    {
+        await RefreshStuff();
+    }
+
+    private async void OnFirstClicked()
+    {
+        await Blockchain.Instance.SelectExpeditionChallenge(Expedition.NextChallenges.FirstOrDefault().Id);
+    }
+
+    private async void OnSecondClicked()
     {
         await RefreshStuff();
     }
@@ -110,8 +130,7 @@ public class PartyDetailsScreen : MonoBehaviour
     void Update()
     {
         timeDifference = dateTime - DateTime.UtcNow;
-        if(timeDifference < TimeSpan.FromSeconds(5))
-        {
-        }
+
+            Timer.text = $"{timeDifference.Minutes} minutes left";
     }
 }

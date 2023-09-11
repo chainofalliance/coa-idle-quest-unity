@@ -27,7 +27,7 @@ public class ScreenShop : MonoBehaviour
 
     private long shardsAmount;
 
-    async void Start()
+     void Start()
     {
         Hero.onClick.AddListener(OnHeroPanelOpen);
         Cheatshards.onClick.AddListener(OnCheat);
@@ -107,7 +107,6 @@ public class ScreenShop : MonoBehaviour
 
     private void OnBackClicked()
     {
-        UnityEngine.Debug.Log("OnBack");
         ReturnBack?.Invoke();
     }
 

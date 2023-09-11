@@ -1,14 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static Blockchain;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class BackPackMenu : MonoBehaviour
 {
@@ -27,7 +22,7 @@ public class BackPackMenu : MonoBehaviour
     private BackPackEntry selectedbackpack;
     private int consumableSlots;
 
-    public event Action<List<ConsumableEntry>> EquippedReturn;
+    public event Action<List<ConsumableEntry>, Blockchain.Rarity> EquippedReturn;
     public event Action ReturnBack;
 
     async void Start()
@@ -42,7 +37,7 @@ public class BackPackMenu : MonoBehaviour
 
     private void OnEquipClicked()
     {
-        EquippedReturn?.Invoke(backPackconsumables);
+        EquippedReturn?.Invoke(backPackconsumables, ConvertStringToRarity(selectedbackpack.EntryName));
     }
 
     private void OnAddClicked()
@@ -116,12 +111,13 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         ReturnBack?.Invoke();
     }
 
-    private async UniTask<List<BackpackEntry>> GetBackPackData()
+    private async UniTask<List<Blockchain.BackpackEntry>> GetBackPackData()
     {
         var response = await Blockchain.Instance.GetBackpacks();
 
         foreach (var backpack in response)
         {
+            Debug.Log(backpack.Backpack + " backpacks number " + backpack.Amount);
             var backPackEntry = Instantiate(BackpackPrefab, BackPackRoot.transform).GetComponent<BackPackEntry>();
             for (long i = backpack.Amount; i > 0; i--)
             {
@@ -184,7 +180,6 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
                 continue;
             }
             selectedConsumable = consumable;
-            break;
         }
     }
 
@@ -208,7 +203,6 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         RefreshInventory();
 
         await GetConsumableData();
-
         ClearBackpackSlots();
 
         foreach (BackPackEntry bp in backpacks)
@@ -228,23 +222,20 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
                 var slot = Instantiate(SlotPrefab, ConsumablesRoot.transform);
                 freeconsumeSlots.Add(slot);
             }
-            break;
         }
-
-
     }
 
-    private Rarity ConvertStringToRarity(string str)
+    private Blockchain.Rarity ConvertStringToRarity(string str)
     {
         StringComparison comp = StringComparison.OrdinalIgnoreCase;
-        foreach (Rarity suit in (Rarity[])Enum.GetValues(typeof(Rarity)))
+        foreach (Blockchain.Rarity suit in (Blockchain.Rarity[])Enum.GetValues(typeof(Blockchain.Rarity)))
         {
             if (str.Contains(suit.ToString(), comp))
             {
                 return suit;
             }
         }
-        return Rarity.Common;
+        return Blockchain.Rarity.Common;
     }
 
     private async void OnEnable()
