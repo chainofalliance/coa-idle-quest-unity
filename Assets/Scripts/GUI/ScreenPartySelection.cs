@@ -17,7 +17,7 @@ public class ScreenPartySelection : MonoBehaviour
     [SerializeField] private GameObject PartyRoot, PartyPrefab;
     [SerializeField] private Config Config;
 
-
+    private List<PartyEntry> CreatedParties = new List<PartyEntry>();
     private PartyEntry SelectedPartyEntry;
     // Start is called before the first frame update
     void Start()
@@ -58,6 +58,7 @@ public class ScreenPartySelection : MonoBehaviour
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
         createPartyScreen.PartyUpdated += OnPartyUpdated;
+        createPartyScreen.InjectDependency(CreatedParties);
     }
 
     private async void OnDetailsClicked()
@@ -90,6 +91,13 @@ public class ScreenPartySelection : MonoBehaviour
 
         partyEntry.Initialize(heroes, consumables, Config, Rarity.Common);
         partyEntry.Selected += OnSelected;
+
+        if(CreatedParties.Contains(partyEntry) == false)
+        {
+            CreatedParties.Add(partyEntry);
+            Debug.Log(CreatedParties);
+        }
+
     }
 
     private void OnSelected(PartyEntry entry)

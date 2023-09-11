@@ -45,7 +45,7 @@ public class PartyDetailsScreen : MonoBehaviour
         for (int i = 0; i < heroesParty.Count; i++)
         {
             var heroEntry = Instantiate(HeroPrefab, HeroRoot.transform).GetComponent<CharacterEntry>();
-            heroEntry.Initialize(heroesParty[i], configuration);
+            heroEntry.Initialize(heroesParty[i], configuration, false, true, true);
         }
     }
 

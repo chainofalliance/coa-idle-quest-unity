@@ -92,7 +92,7 @@ public class PartyEntry : MonoBehaviour
 
         for(int i = 0; i < heroes.Count; i++)
         {
-            heroes[i].Initialize(heroesParty[i], configuration);
+            heroes[i].Initialize(heroesParty[i], configuration, false, true, true);
         }
     }
 

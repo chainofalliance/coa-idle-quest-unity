@@ -66,7 +66,7 @@ public class ScreenShop : MonoBehaviour
         {
             var heroEntry = Instantiate(HeroPrefab, HeroRoot.transform).GetComponent<CharacterEntry>();
 
-            heroEntry.Initialize(hero.Hero, config, hero.Price);
+            heroEntry.Initialize(hero.Hero, config, false, false, true, hero.Price);
             heroEntry.Selected += OnHeroSelected;
             heroes.Add(heroEntry);
         }

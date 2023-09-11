@@ -18,21 +18,39 @@ public class CharacterEntry : MonoBehaviour, IEntry
     [SerializeField] private GameObject InParty;
     [SerializeField] private GameObject Active;
     [SerializeField] private Button Entry;
+    [SerializeField] private Button DeleteEntry;
 
     public Chromia.Buffer HeroID { get; set; }
     public string EntryName{ get; set; }
     public long Price { get; set; }
     public Sprite HeroImage { get; set; }
     public bool IsSelect { get; set; }
-    public event Action<CharacterEntry> Selected;
+    public bool IsAvailable { get; set; }
+    public Blockchain.Hero Hero;
+    private bool isParty;
+    private bool isManagable;
 
+    public event Action<CharacterEntry> Selected;
+    public event Action<CharacterEntry> Deleted;
     void Start()
     {
         Entry.onClick.AddListener(OnHeroSelected);
+        DeleteEntry.onClick.AddListener(OnHeroDeleted);
     }
 
-    private void OnHeroSelected()
+    private void OnHeroDeleted()
     {
+        if(isManagable)
+        {
+            Deleted?.Invoke(this);
+        }
+    }
+
+        private void OnHeroSelected()
+    {
+        if (IsAvailable == false || isParty)
+            return;
+
         Active.SetActive(true);
         IsSelect = true;
         Selected?.Invoke(this);
@@ -44,8 +62,10 @@ public class CharacterEntry : MonoBehaviour, IEntry
         Active.SetActive(false);
     }
 
-    public void Initialize(Blockchain.Hero hero, Config configuration, int price = default)
+    public void Initialize(Blockchain.Hero hero, Config configuration, bool managable, bool isPartyEntry, bool isAvailable, int price = default)
     {
+        Hero = hero;
+        isParty = isPartyEntry;
         Price = price;
         RaceIcon.sprite = configuration.RaceIcons.FirstOrDefault(x => x.species == hero.Species).icon;
         Name.text = hero.Name;
@@ -58,7 +78,10 @@ public class CharacterEntry : MonoBehaviour, IEntry
         HealthString.text = $"{hero.Health}/{fullRarityHealth}";
         RarityIcon.sprite = configuration.HeroRarityIcons.FirstOrDefault(x => x.rarity == hero.Rarity).heroRarity;
         ClassIcon.sprite = configuration.ClassIcons.FirstOrDefault(x => x.heroClass == hero.Class).icon;
-
+        InParty.SetActive(!isAvailable);
+        IsAvailable = isAvailable;
+        isManagable = managable;
+        DeleteEntry.gameObject.SetActive(managable);
         HeroImage = configuration.HeroImages.FirstOrDefault(x => x.rarity == hero.Rarity && x.species == hero.Species && x.classType == hero.Class).icon;
     }
 
