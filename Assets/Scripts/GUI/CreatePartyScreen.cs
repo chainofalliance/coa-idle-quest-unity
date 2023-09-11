@@ -11,8 +11,8 @@ using static Blockchain;
 public class CreatePartyScreen : MonoBehaviour
 {
     [SerializeField] private Config Config;
-    [SerializeField] private Button Entry, Shop, Back;
-    [SerializeField] private GameObject ScreenShop;
+    [SerializeField] private Button Entry, Shop, Backpack, Back;
+    [SerializeField] private GameObject ScreenShop,BackPackScreen;
     [SerializeField] private GameObject PartyPrefab, PartyRoot, HeroPrefab, HeroRoot;
 
     private List<PartyEntry> createdParties;
@@ -25,6 +25,7 @@ public class CreatePartyScreen : MonoBehaviour
         Entry.onClick.AddListener(OnEntrySelected);
         Back.onClick.AddListener(OnBackSelected);
         Shop.onClick.AddListener(OnShopSelected);
+        Backpack.onClick.AddListener(OnBackpackSelected);
     }
 
     public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Rarity> PartyUpdated;
@@ -39,6 +40,13 @@ public class CreatePartyScreen : MonoBehaviour
     {
         List<ConsumableEntry> consumables = new();
         PartyUpdated?.Invoke(heroes, consumables, Rarity.Common);
+    }
+
+    private void OnBackpackSelected()
+    {
+        BackPackScreen.SetActive(true);
+        var backPackScreen = BackPackScreen.GetComponent<BackPackMenu>();
+        backPackScreen.ReturnBack += OnReturnFromBackPack;
     }
 
     public async void InjectDependency(List<PartyEntry> parties)
@@ -71,6 +79,11 @@ public class CreatePartyScreen : MonoBehaviour
     private async void OnReturnFromShop()
     {
         ScreenShop.SetActive(false);
+    }
+
+    private async void OnReturnFromBackPack()
+    {
+        BackPackScreen.SetActive(false);
     }
 
     private async UniTask<List<Blockchain.Hero>> GetHeroData()

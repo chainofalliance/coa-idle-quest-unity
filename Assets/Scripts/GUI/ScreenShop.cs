@@ -184,7 +184,7 @@ public class ScreenShop : MonoBehaviour
 
     private void OnBackPackSelected(BackPackEntry entry)
     {
-        foreach (IEntry bp in backpacks)
+        foreach (BackPackEntry bp in backpacks)
         {
             if (bp != entry)
             {
