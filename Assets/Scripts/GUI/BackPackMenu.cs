@@ -38,7 +38,7 @@ public class BackPackMenu : MonoBehaviour
         ReturnBack?.Invoke();
     }
 
-    private async UniTask<Dictionary<string,int>> GetBackPackData()
+    private async UniTask<List<BackpackEntry>> GetBackPackData()
     {
         var response = await Blockchain.Instance.GetBackpacks();
         UnityEngine.Debug.Log("Backpacks " + response.Count);
@@ -54,7 +54,7 @@ public class BackPackMenu : MonoBehaviour
         return response;
     }
 
-    private async UniTask<Dictionary<Consumable, int>> GetConsumableData()
+    private async UniTask<List<Blockchain.ConsumableEntry>> GetConsumableData()
     {
 
         var response = await Blockchain.Instance.GetConsumables();
@@ -63,7 +63,7 @@ public class BackPackMenu : MonoBehaviour
         {
             var consumableEntry = Instantiate(ConsumablesPrefab, ConsumablesRoot.transform).GetComponent<ConsumableEntry>();
 
-            consumableEntry.Initialize(consumable.Key, config);
+            consumableEntry.Initialize(consumable.Consumable, config);
             consumableEntry.Selected += OnConsumableSelected;
             consumables.Add(consumableEntry);
         }

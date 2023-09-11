@@ -71,7 +71,7 @@ public class PartyDetailsScreen : MonoBehaviour
         await RefreshStuff();
     }
 
-    private async UniTask<Dictionary<string, int>> GetBackPackData()
+    private async UniTask<List<BackpackEntry>> GetBackPackData()
     {
         var response = await Blockchain.Instance.GetBackpacks();
 
@@ -99,7 +99,7 @@ public class PartyDetailsScreen : MonoBehaviour
         var response = await Blockchain.Instance.GetConsumables();
         foreach (var backpack in response)
         {
-            Debug.Log(backpack.Key.ToString() + " !! " + backpack.Value.ToString());
+            Debug.Log(backpack.Consumable.ToString() + " !! " + backpack.Amount.ToString());
         }
 
         await GetBackPackData();

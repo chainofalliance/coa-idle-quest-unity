@@ -202,16 +202,16 @@ public class Blockchain : MonoBehaviour
         return await Client.Query<List<Hero>>("IPlayer.get_heroes", ("account_id", AccountId));
     }
 
-    public async UniTask<Dictionary<string, int>> GetBackpacks()
+    public async UniTask<List<BackpackEntry>> GetBackpacks()
     {
-        var backpacks = await Client.Query<List<(string, int)>>("IPlayer.get_backpacks", ("account_id", AccountId));
-        return backpacks == null ? new() : backpacks.ToDictionary(s => s.Item1, s => s.Item2);
+        return await Client.Query<List<BackpackEntry>>("IPlayer.get_backpacks", ("account_id", AccountId));
     }
 
-    public async UniTask<Dictionary<Consumable, int>> GetConsumables()
+    public async UniTask<List<ConsumableEntry>> GetConsumables()
     {
-        var consumables = await Client.Query<List<(Consumable, int)>>("IPlayer.get_consumables", ("account_id", AccountId));
-        return consumables == null ? new() : consumables.ToDictionary(s => s.Item1, s => s.Item2);
+        var t = await Client.Query<object>("IPlayer.get_consumables", ("account_id", AccountId));
+        Debug.Log(JsonConvert.SerializeObject(t));
+        return await Client.Query<List<ConsumableEntry>>("IPlayer.get_consumables", ("account_id", AccountId));
     }
 
     public async UniTask<long> GetShards()
@@ -297,6 +297,22 @@ public class Blockchain : MonoBehaviour
         public string Backpack;
         [JsonProperty("price")]
         public int Price;
+    }
+
+    public class BackpackEntry
+    {
+        [JsonProperty("backpack")]
+        public string Backpack;
+        [JsonProperty("amount")]
+        public int Amount;
+    }
+
+    public class ConsumableEntry
+    {
+        [JsonProperty("consumable")]
+        public Consumable Consumable;
+        [JsonProperty("amount")]
+        public int Amount;
     }
 
     public class Expedition
