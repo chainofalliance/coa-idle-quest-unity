@@ -7,7 +7,6 @@ using Chromia;
 using System.Linq;
 using static Blockchain;
 using System;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class ScreenShop : MonoBehaviour
 {
