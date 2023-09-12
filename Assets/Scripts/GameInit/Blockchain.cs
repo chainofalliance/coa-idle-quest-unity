@@ -325,7 +325,7 @@ public class Blockchain : MonoBehaviour
         [JsonProperty("challenges")]
         public List<Challenge> Challenges;
         [JsonProperty("consumables")]
-        public List<(Consumable, int)> Consumables;
+        public List<Consumable> Consumables;
         [JsonProperty("arrival_at")]
         public long ArrivalAt;
     }
