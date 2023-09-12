@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using static Blockchain;
 
 public class CreatePartyScreen : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class CreatePartyScreen : MonoBehaviour
         await GetHeroData();
     }
 
-    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, string, Blockchain.Rarity> PartyUpdated;
+    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()
@@ -51,7 +52,8 @@ public class CreatePartyScreen : MonoBehaviour
 
     private void OnEntrySelected()
     {
-        PartyUpdated?.Invoke(heroes, consumables, backpackEquipedName, backpackEquiped);
+        ExpeditionOverview exp = default;
+        PartyUpdated?.Invoke(heroes, consumables, backpackEquipedName, backpackEquiped, exp);
     }
 
     private void OnBackpackSelected()

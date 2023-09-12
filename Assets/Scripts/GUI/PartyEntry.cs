@@ -83,8 +83,18 @@ public class PartyEntry : MonoBehaviour
         Danger.text = $"{danger} Expedition";
     }
 
-    public void Initialize(List<Blockchain.Hero> heroesParty, List<ConsumableEntry> consumable, Config configuration, string backpackName, Blockchain.Rarity rarity)
+    public void Initialize(List<Blockchain.Hero> heroesParty,
+                           List<ConsumableEntry> consumable,
+                           Config configuration,
+                           string backpackName,
+                           Rarity rarity,
+                           ExpeditionOverview exp = default)
     {
+        if(exp != default)
+        {
+            Notification.SetActive(true);
+        }
+
         backpackname = backpackName;
         party = heroesParty;
         consumables = consumable;

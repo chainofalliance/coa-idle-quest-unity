@@ -42,7 +42,10 @@ public class PartyDetailsScreen : MonoBehaviour
     }
 
 
-    public void InitializeParty(List<Blockchain.Hero> heroesParty, List<ConsumableEntry> consumables, Config configuration, Blockchain.Rarity rarity)
+    public void InitializeParty(List<Blockchain.Hero> heroesParty,
+                                List<ConsumableEntry> consumables,
+                                Config configuration,
+                                Rarity rarity)
     {
         party = heroesParty;
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));
@@ -55,7 +58,7 @@ public class PartyDetailsScreen : MonoBehaviour
         }
     }
 
-    public async void InitializeExpedition(ExpeditionOverview exp)
+    public void InitializeExpedition(ExpeditionOverview exp)
     {
         Expedition = exp;
         Id = exp.Id;
@@ -129,8 +132,8 @@ public class PartyDetailsScreen : MonoBehaviour
 
     void Update()
     {
-        timeDifference = dateTime - DateTime.UtcNow;
+       timeDifference = dateTime - DateTime.UtcNow;
 
-            Timer.text = $"{timeDifference.Minutes} minutes left";
+       Timer.text = $"{timeDifference.Minutes} minutes left";
     }
 }

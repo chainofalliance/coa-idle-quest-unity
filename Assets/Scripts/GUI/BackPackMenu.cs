@@ -35,11 +35,6 @@ public class BackPackMenu : MonoBehaviour
         await GetBackPackData();
     }
 
-    async void OnEnable()
-    {
-       await GetBackPackData();
-    }
-
     private void OnEquipClicked()
     {
         EquippedReturn?.Invoke(backPackconsumables, selectedbackpack.EntryName, ConvertStringToRarity(selectedbackpack.EntryName));
@@ -249,8 +244,10 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
     private async void OnEnable()
     {
         RefreshInventory();
-        await GetConsumableData();
         ClearBackpackSlots();
+
+        await GetConsumableData();
+        await GetBackPackData();
 
         foreach(var bp in backpacks)
             bp.Deselect();
