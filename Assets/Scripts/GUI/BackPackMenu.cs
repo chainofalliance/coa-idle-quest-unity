@@ -69,19 +69,26 @@ public class BackPackMenu : MonoBehaviour
     {
         if (list[i].Consumable == backPackEntry.consumableType)
         {
-            list.RemoveAt(i);
+           if( list[i].Amount > 1)
+            {
+                list[i].Amount--;
+            }
+           else
+            {
+                list.RemoveAt(i);
+            }
             return;
         }
     }
 
-private async void RemoveConsumableFromInventory(ConsumableEntry entry)
+    private async void RemoveConsumableFromInventory(ConsumableEntry entry)
     {
         var response = await Blockchain.Instance.GetConsumables();
         var slotsCount = 40;
 
         RefreshInventory();
 
-        foreach(var consumable in backPackconsumables)
+        foreach (var consumable in backPackconsumables)
         {
             for (int i = response.Count - 1; i >= 0; i--)
             {
@@ -91,12 +98,14 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
 
         foreach (var consumable in response)
         {
-            slotsCount--;
-            var consumableEntry = Instantiate(ConsumablesPrefab, InventoryRoot.transform).GetComponent<ConsumableEntry>();
+            for (long i = consumable.Amount; i > 0; i--)
+            {
+                var consumableEntry = Instantiate(ConsumablesPrefab, InventoryRoot.transform).GetComponent<ConsumableEntry>();
 
-            consumableEntry.Initialize(consumable.Consumable, config);
-            consumableEntry.Selected += OnConsumableSelected;
-            consumables.Add(consumableEntry);
+                consumableEntry.Initialize(consumable.Consumable, config);
+                consumableEntry.Selected += OnConsumableSelected;
+                consumables.Add(consumableEntry);
+            }
         }
 
         for (var i = slotsCount; i > 0; i--)
@@ -117,9 +126,9 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
 
         foreach (var backpack in response)
         {
-            var backPackEntry = Instantiate(BackpackPrefab, BackPackRoot.transform).GetComponent<BackPackEntry>();
-            for (long i = backpack.Amount; i > 0; i--)
+            for (long i = backpack.Amount ; i > 0; i--)
             {
+                var backPackEntry = Instantiate(BackpackPrefab, BackPackRoot.transform).GetComponent<BackPackEntry>();
                 backPackEntry.Initialize(backpack.Backpack);
                 backPackEntry.Selected += OnBackPackSelected;
                 backpacks.Add(backPackEntry);
@@ -137,12 +146,14 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         var slotsCount = 40;
         foreach (var consumable in response)
         {
-            slotsCount--;
-            var consumableEntry = Instantiate(ConsumablesPrefab, InventoryRoot.transform).GetComponent<ConsumableEntry>();
-
-            consumableEntry.Initialize(consumable.Consumable, config);
-            consumableEntry.Selected += OnConsumableSelected;
-            consumables.Add(consumableEntry);
+            for (long i = consumable.Amount ; i > 0; i--)
+            {
+                slotsCount--;
+                var consumableEntry = Instantiate(ConsumablesPrefab, InventoryRoot.transform).GetComponent<ConsumableEntry>();
+                consumableEntry.Initialize(consumable.Consumable, config);
+                consumableEntry.Selected += OnConsumableSelected;
+                consumables.Add(consumableEntry);
+            }
         }
 
         for (var i = slotsCount; i > 0; i--)

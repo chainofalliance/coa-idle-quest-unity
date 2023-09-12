@@ -43,13 +43,16 @@ public class PartyEntry : MonoBehaviour
         {
             DetailsClicked?.Invoke();
         }
-
     }
 
     public void Deselect()
     {
         Active.SetActive(false);
+    }
 
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     private void OnPartySelected()
@@ -71,12 +74,6 @@ public class PartyEntry : MonoBehaviour
             timeDifference = dateTime - DateTime.UtcNow;
 
             Notification.SetActive(true);
-        }
-
-
-        foreach (var cons in consumables)
-        {
-            Debug.Log(cons.EntryName);
         }
 
         DangerSet = true;
@@ -122,7 +119,7 @@ public class PartyEntry : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
         Details.interactable = Active.activeSelf && Expedition != default;
@@ -131,6 +128,5 @@ public class PartyEntry : MonoBehaviour
         {
             Timer.text = timeDifference.ToString("H:mm:ss");
         }
-
     }
 }

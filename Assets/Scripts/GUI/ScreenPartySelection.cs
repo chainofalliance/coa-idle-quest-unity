@@ -85,6 +85,16 @@ public class ScreenPartySelection : MonoBehaviour
         if (Loading.activeSelf)
             return;
 
+        for (int i = CreatedParties.Count - 1; i >= 0; i--)
+        {
+            if (CreatedParties[i].Expedition == default)
+            {
+                CreatedParties[i].Destroy();
+                CreatedParties.RemoveAt(i);
+            }
+
+        }
+
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
 
@@ -134,14 +144,10 @@ public class ScreenPartySelection : MonoBehaviour
         CreatePartyScreen.SetActive(false);
 
         var partyEntry = Instantiate(PartyPrefab, PartyRoot.transform).GetComponent<PartyEntry>();
-
         partyEntry.Initialize(heroes, consumables, Config, backpackName, backpack, exp);
         partyEntry.Selected += OnSelected;
 
-        if (CreatedParties.Contains(partyEntry) == false)
-        {
-            CreatedParties.Add(partyEntry);
-        }
+        CreatedParties.Add(partyEntry);
     }
 
     private void OnSelected(PartyEntry entry)
