@@ -246,13 +246,11 @@ private async void RemoveConsumableFromInventory(ConsumableEntry entry)
         RefreshInventory();
         ClearBackpackSlots();
 
-        await GetConsumableData();
-        await GetBackPackData();
-
-        foreach(var bp in backpacks)
+        foreach (var bp in backpacks)
             bp.Deselect();
 
-        selectedbackpack = null;
+        await GetBackPackData();
+        await GetConsumableData();
     }
 
     void Update()

@@ -16,12 +16,13 @@ public class PartyEntry : MonoBehaviour
     [SerializeField] private GameObject Notification, Active;
     [SerializeField] private GameObject PartyDetailsScreen;
 
-    public bool DangerSet => Danger.text != "";
+    public bool DangerSet { get; set; }
     public List<Blockchain.Hero> party;
-    public List<Blockchain.Consumable> partyconsumables;
+    public ExpeditionOverview Expedition = default;
+    public List<Consumable> partyconsumables;
     public List<ConsumableEntry> consumables;
-    public Blockchain.Rarity partyrarity;
-    public Blockchain.DangerLevel danger;
+    public Rarity partyrarity;
+    public DangerLevel danger;
     public string backpackname = "";
     private TimeSpan timeDifference;
     public event Action<PartyEntry> Selected;
@@ -35,14 +36,14 @@ public class PartyEntry : MonoBehaviour
 
     private async void OnDetailsClicked()
     {
-        var result = await Blockchain.Instance.GetActiveExpeditions();
+        var result = await Instance.GetActiveExpeditions();
         var exp = result.FirstOrDefault();
 
-       if(exp != null)
+        if (exp != null)
         {
             DetailsClicked?.Invoke();
         }
-   
+
     }
 
     public void Deselect()
@@ -60,25 +61,33 @@ public class PartyEntry : MonoBehaviour
 
     public async void InitializeExpedition()
     {
-        var result = await Blockchain.Instance.GetActiveExpeditions();
-        var exp = result.FirstOrDefault();
+        var result = await Instance.GetActiveExpeditions();
+        Expedition = result.FirstOrDefault();
 
-        if (exp != null && exp.ActiveChallenge.ArrivalAt > 0)
+        if (Expedition != null && Expedition.ActiveChallenge.ArrivalAt > 0)
         {
-
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(exp.ActiveChallenge.ArrivalAt).ToLocalTime();
+            dateTime = dateTime.AddSeconds(Expedition.ActiveChallenge.ArrivalAt).ToLocalTime();
             timeDifference = dateTime - DateTime.UtcNow;
 
             Notification.SetActive(true);
         }
+
+
+        foreach (var cons in consumables)
+        {
+            Debug.Log(cons.EntryName);
+        }
+
+        DangerSet = true;
+        Danger.text = $"In {Expedition.DangerLevel} Expedition";
     }
 
-    public  void InitializeDanger()
+    public void InitializeDanger()
     {
-        Array values = Enum.GetValues(typeof(Blockchain.DangerLevel));
+        Array values = Enum.GetValues(typeof(DangerLevel));
         System.Random random = new System.Random();
-        var randomDanger = (Blockchain.DangerLevel)values.GetValue(random.Next(values.Length));
+        var randomDanger = (DangerLevel)values.GetValue(random.Next(values.Length));
         danger = randomDanger;
         Danger.text = $"{danger} Expedition";
     }
@@ -90,19 +99,31 @@ public class PartyEntry : MonoBehaviour
                            Rarity rarity,
                            ExpeditionOverview exp = default)
     {
-        if(exp != default)
+        if (exp != default)
         {
             Notification.SetActive(true);
+            Danger.text = $"In {exp.DangerLevel} Expedition";
+        }
+        else
+        {
+            InitializeDanger();
         }
 
+        Expedition = exp;
+        DangerSet = Expedition != default;
         backpackname = backpackName;
         party = heroesParty;
         consumables = consumable;
+
+        foreach (var cons in consumables)
+        {
+            Debug.Log("!!!!! " + cons.EntryName);
+        }
+
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));
         partyrarity = rarity;
-        danger = Blockchain.DangerLevel.Harmless;
- 
-        for(int i = 0; i < heroes.Count; i++)
+
+        for (int i = 0; i < heroes.Count; i++)
         {
             heroes[i].Initialize(heroesParty[i], configuration, false, true, true);
         }
@@ -111,6 +132,8 @@ public class PartyEntry : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Details.interactable = Active.activeSelf && Expedition != default;
+
         if (timeDifference.Milliseconds > 0)
         {
             Timer.text = timeDifference.ToString("H:mm:ss");

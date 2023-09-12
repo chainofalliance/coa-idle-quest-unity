@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,10 +36,10 @@ public class ScreenPartySelection : MonoBehaviour
 
     private async UniTask<List<ExpeditionOverview>> LoadParties()
     {
-        var response = await Blockchain.Instance.GetActiveExpeditions();
+        var response = await Instance.GetActiveExpeditions();
         var cons = new List<ConsumableEntry>();
         var backpack = "";
-        // TODO: How to get consumables and backpacks
+
         foreach (var exp in response)
         {
             var heroes = new List<Blockchain.Hero>();
@@ -57,14 +58,14 @@ public class ScreenPartySelection : MonoBehaviour
             return;
         }
 
-        var result = await Blockchain.Instance.StartExpedition(
+        var result = await Instance.StartExpedition(
             SelectedPartyEntry.party,
             SelectedPartyEntry.partyconsumables,
             SelectedPartyEntry.danger,
             SelectedPartyEntry.backpackname);
 
-
-        SelectedPartyEntry.InitializeExpedition();
+        if (result.Status == Chromia.TransactionReceipt.ResponseStatus.Confirmed)
+            SelectedPartyEntry.InitializeExpedition();
     }
 
     private void OnDangerSelected()
@@ -79,6 +80,9 @@ public class ScreenPartySelection : MonoBehaviour
 
     private void OnEntrySelected()
     {
+        if (Loading.activeSelf)
+            return;
+
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
 
@@ -160,6 +164,12 @@ public class ScreenPartySelection : MonoBehaviour
 
     void Update()
     {
-        StartExpedition.interactable = SelectedPartyEntry != null && SelectedPartyEntry.DangerSet;
+        StartExpedition.interactable = SelectedPartyEntry != null
+            && SelectedPartyEntry.Expedition == default;
+
+        Danger.interactable = SelectedPartyEntry != null
+            && SelectedPartyEntry.Expedition == default
+            && SelectedPartyEntry.DangerSet == false;
+
     }
 }

@@ -1940,6 +1940,7 @@ MonoBehaviour:
   HeroPrefab: {fileID: 2444398170252841774, guid: b4f1cac3e321c4980828a1298f32d3ef, type: 3}
   HeroRoot: {fileID: 396179707}
   Timer: {fileID: 1728112726}
+  heroes: []
   partyconsumables: 
   partyrarity: 0
 --- !u!1 &608343609
@@ -3143,6 +3144,18 @@ PrefabInstance:
     - target: {fileID: 3686945856418629326, guid: b3fb9005a4a6c414c99da53e3ba7f86b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696550120390247355, guid: b3fb9005a4a6c414c99da53e3ba7f86b, type: 3}
+      propertyPath: m_text
+      value: "Change \ndanger"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696550120390247355, guid: b3fb9005a4a6c414c99da53e3ba7f86b, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696550120390247355, guid: b3fb9005a4a6c414c99da53e3ba7f86b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4487219862258361478, guid: b3fb9005a4a6c414c99da53e3ba7f86b, type: 3}
       propertyPath: m_AspectRatio
