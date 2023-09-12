@@ -22,7 +22,7 @@ public class PartyEntry : MonoBehaviour
     public List<ConsumableEntry> consumables;
     public Blockchain.Rarity partyrarity;
     public Blockchain.DangerLevel danger;
-
+    public string backpackname = "";
     private TimeSpan timeDifference;
     public event Action<PartyEntry> Selected;
     public event Action DetailsClicked;
@@ -83,8 +83,19 @@ public class PartyEntry : MonoBehaviour
         Danger.text = $"{danger} Expedition";
     }
 
-    public void Initialize(List<Blockchain.Hero> heroesParty, List<ConsumableEntry> consumable, Config configuration, Blockchain.Rarity rarity)
+    public void Initialize(List<Blockchain.Hero> heroesParty,
+                           List<ConsumableEntry> consumable,
+                           Config configuration,
+                           string backpackName,
+                           Rarity rarity,
+                           ExpeditionOverview exp = default)
     {
+        if(exp != default)
+        {
+            Notification.SetActive(true);
+        }
+
+        backpackname = backpackName;
         party = heroesParty;
         consumables = consumable;
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));

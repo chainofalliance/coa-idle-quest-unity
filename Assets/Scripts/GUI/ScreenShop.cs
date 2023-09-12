@@ -104,6 +104,7 @@ public class ScreenShop : MonoBehaviour
     void Update()
     {
         Shard.SetActive(Price.text != "");
+        Buy.interactable = Price.text != "" && shardsAmount >= int.Parse(Price.text);
     }
 
     private void OnBackClicked()
@@ -113,63 +114,36 @@ public class ScreenShop : MonoBehaviour
 
     private async void OnBuyClicked()
     {
+        TransactionReceipt response = default;
+        Title.text = "Connecting to blockchain. Please, wait";
+
         var backpack = backpacks.FirstOrDefault(x => x.IsSelect == true);
 
         if (backpack != null)
-        {
-            var response = await Blockchain.Instance.BuyBackpack(backpack.EntryName);
-
-            if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
-            {
-                Popup.Create($"Bought {backpack.EntryName}!");
-                await RefreshShardsAmount();
-                return;
-            } 
-            else
-            {
-                Debug.LogError($"{response.Status}: {response.RejectReason}");
-            }
-        }
+            response = await Blockchain.Instance.BuyBackpack(backpack.EntryName);
 
         var hero = heroes.FirstOrDefault(x => x.IsSelect == true);
-
         if (hero != null)
-        {
-            var response = await Blockchain.Instance.BuyHero(hero.HeroID, hero.EntryName);
+            response = await Blockchain.Instance.BuyHero(hero.HeroID, hero.EntryName);
 
-            if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
-            {
-                Popup.Create($"Bought hero!");
-                ClearHeroes();
-                await GetHeroData();
-                await RefreshShardsAmount();
-                return;
-            }
-            else
-            {
-                Debug.LogError($"{response.Status}: {response.RejectReason}");
-            }
+        if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
+        {
+            ClearHeroes();
+            await GetHeroData();
+            await RefreshShardsAmount();
+            Title.text = "Purchase successful!";
         }
 
         var cons = consumables.FirstOrDefault(x => x.IsSelect == true);
-
         if (cons != null)
-        {
-            var response = await Blockchain.Instance.BuyConsumable(cons.consumableType);
+            response = await Blockchain.Instance.BuyConsumable(cons.consumableType);
 
-            if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
-            {
-                Popup.Create($"Bought {cons.consumableType}!");
-                await RefreshShardsAmount();
-                return;
-            }
-            else
-            {
-                Debug.LogError($"{response.Status}: {response.RejectReason}");
-            }
+        if (response.Status == TransactionReceipt.ResponseStatus.Confirmed)
+        {
+            await RefreshShardsAmount();
+            Title.text = "Purchase successful!";
         }
 
-        Popup.Create($"Error!");
     }
 
     private void ClearHeroes()
@@ -219,8 +193,6 @@ public class ScreenShop : MonoBehaviour
             }
             Title.text = entry.EntryName;
             Price.text = entry.Price.ToString();
-
-            Buy.interactable = shardsAmount >= entry.Price;
         }
     }
 
@@ -236,8 +208,6 @@ public class ScreenShop : MonoBehaviour
             }
             Title.text = hero.EntryName;
             Price.text = hero.Price.ToString();
-
-            Buy.interactable = shardsAmount >= hero.Price;
         }
     }
 
@@ -254,8 +224,6 @@ public class ScreenShop : MonoBehaviour
 
             Title.text = entry.EntryName.ToString();
             Price.text = entry.Price.ToString();
-
-            Buy.interactable = shardsAmount >= entry.Price;
         }
     }
 
@@ -332,7 +300,7 @@ public class ScreenShop : MonoBehaviour
         ShardsAmount.text = shardsAmount.ToString();
         Title.text = "";
         Price.text = "";
-   
+
         return shardsAmount;
     }
 }

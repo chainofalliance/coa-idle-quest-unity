@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using static Blockchain;
 
 public class CreatePartyScreen : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class CreatePartyScreen : MonoBehaviour
     private List<Blockchain.Hero> heroes = new();
     private List<ConsumableEntry> consumables = new();
     private Blockchain.Rarity backpackEquiped;
+    private string backpackEquipedName;
 
     async void Start()
     {
@@ -28,10 +30,12 @@ public class CreatePartyScreen : MonoBehaviour
         Backpack.onClick.AddListener(OnBackpackSelected);
         var shopScreen = ScreenShop.GetComponent<ScreenShop>();
         shopScreen.ReturnBack += OnReturnFromShop;
+
+        ResetEntries();
         await GetHeroData();
     }
 
-    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, Blockchain.Rarity> PartyUpdated;
+    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()
@@ -40,9 +44,16 @@ public class CreatePartyScreen : MonoBehaviour
         ResetEntries();
     }
 
+    private async void OnEnable()
+    {
+        ResetEntries();
+        await GetHeroData();
+    }
+
     private void OnEntrySelected()
     {
-        PartyUpdated?.Invoke(heroes, consumables, backpackEquiped);
+        ExpeditionOverview exp = default;
+        PartyUpdated?.Invoke(heroes, consumables, backpackEquipedName, backpackEquiped, exp);
     }
 
     private void OnBackpackSelected()
@@ -55,18 +66,17 @@ public class CreatePartyScreen : MonoBehaviour
 
     private void ResetEntries()
     {
-        foreach (Transform partyEntry in PartyRoot.transform)
+        for (int i = heroEntries.Count - 1; i >= 0; i--)
         {
-            Destroy(partyEntry.gameObject);
+            heroEntries[i].Destroy();
+            heroEntries.RemoveAt(i);
         }
 
-        foreach (Transform heroEntry in HeroRoot.transform)
+        for (int i = heroesInParty.Count - 1; i >= 0; i--)
         {
-            Destroy(heroEntry.gameObject);
+            heroesInParty[i].Destroy();
+            heroesInParty.RemoveAt(i);
         }
-
-        heroEntries.Clear();
-        heroesInParty.Clear();
     }
 
     private void OnShopSelected()
@@ -86,11 +96,12 @@ public class CreatePartyScreen : MonoBehaviour
         BackPackScreen.SetActive(false);
     }
 
-    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped, Blockchain.Rarity backpack)
+    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped, string backpackName, Blockchain.Rarity backpack)
     {
         BackPackScreen.SetActive(false);
         consumables = consumablesEquipped;
         backpackEquiped = backpack;
+        backpackEquipedName = backpackName;
     }
 
     private async UniTask<List<Blockchain.Hero>> GetHeroData()

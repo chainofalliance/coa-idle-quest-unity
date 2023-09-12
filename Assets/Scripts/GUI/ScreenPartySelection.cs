@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Chromia;
+using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Blockchain;
@@ -16,15 +15,39 @@ public class ScreenPartySelection : MonoBehaviour
     [SerializeField] private Button Entry, Danger, StartExpedition;
     [SerializeField] private GameObject PartyRoot, PartyPrefab;
     [SerializeField] private Config Config;
+    [SerializeField] private GameObject Loading;
 
     private List<PartyEntry> CreatedParties = new List<PartyEntry>();
     private PartyEntry SelectedPartyEntry;
 
-    void Start()
+    async void Start()
     {
         StartExpedition.onClick.AddListener(OnStarted);
         Entry.onClick.AddListener(OnEntrySelected);
         Danger.onClick.AddListener(OnDangerSelected);
+
+        await UniTask.Delay(5000);
+        await LoadParties();
+
+        Loading.SetActive(false);
+    }
+
+
+    private async UniTask<List<ExpeditionOverview>> LoadParties()
+    {
+        var response = await Blockchain.Instance.GetActiveExpeditions();
+        var cons = new List<ConsumableEntry>();
+        var backpack = "";
+        // TODO: How to get consumables and backpacks
+        foreach (var exp in response)
+        {
+            var heroes = new List<Blockchain.Hero>();
+            foreach (var pm in exp.Party)
+                heroes.Add(pm);
+
+            OnPartyUpdated(heroes, cons, backpack, Rarity.Common, exp);
+        }
+        return response;
     }
 
     private async void OnStarted()
@@ -38,8 +61,8 @@ public class ScreenPartySelection : MonoBehaviour
             SelectedPartyEntry.party,
             SelectedPartyEntry.partyconsumables,
             SelectedPartyEntry.danger,
-            "");
-        Debug.Log(result.Status + "EXP");
+            SelectedPartyEntry.backpackname);
+
 
         SelectedPartyEntry.InitializeExpedition();
     }
@@ -58,29 +81,29 @@ public class ScreenPartySelection : MonoBehaviour
     {
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
+
         createPartyScreen.PartyUpdated += OnPartyUpdated;
         createPartyScreen.ReturnClicked += OnReturn;
     }
 
     private async void OnDetailsClicked()
     {
-        if(SelectedPartyEntry.DangerSet == false)
-        {
-            return;
-        }
-
         var result = await Blockchain.Instance.GetActiveExpeditions();
         var exp = result.FirstOrDefault();
+
         if (SelectedPartyEntry == null || exp == null)
         {
             return;
         }
 
         PartyDetailsScreen.SetActive(true);
-      
+
         var partyDetailsScreen = PartyDetailsScreen.GetComponent<PartyDetailsScreen>();
         partyDetailsScreen.ReturnBack += OnReturnFromDetails;
-        partyDetailsScreen.InitializeParty(SelectedPartyEntry.party, SelectedPartyEntry.consumables, Config, Rarity.Common);
+        partyDetailsScreen.InitializeParty(SelectedPartyEntry.party,
+                                           SelectedPartyEntry.consumables,
+                                           Config,
+                                           Rarity.Common);
         partyDetailsScreen.InitializeExpedition(exp);
 
     }
@@ -96,20 +119,23 @@ public class ScreenPartySelection : MonoBehaviour
         CreatePartyScreen.SetActive(false);
     }
 
-    private void OnPartyUpdated(List<Blockchain.Hero> heroes, List<ConsumableEntry> consumables, Rarity backpack)
+    private void OnPartyUpdated(List<Blockchain.Hero> heroes,
+                                List<ConsumableEntry> consumables,
+                                string backpackName,
+                                Rarity backpack,
+                                ExpeditionOverview exp = default)
     {
         CreatePartyScreen.SetActive(false);
 
         var partyEntry = Instantiate(PartyPrefab, PartyRoot.transform).GetComponent<PartyEntry>();
 
-        partyEntry.Initialize(heroes, consumables, Config, backpack);
+        partyEntry.Initialize(heroes, consumables, Config, backpackName, backpack, exp);
         partyEntry.Selected += OnSelected;
 
         if (CreatedParties.Contains(partyEntry) == false)
         {
             CreatedParties.Add(partyEntry);
         }
-
     }
 
     private void OnSelected(PartyEntry entry)
@@ -119,6 +145,12 @@ public class ScreenPartySelection : MonoBehaviour
             SelectedPartyEntry = null;
             entry.Deselect();
             return;
+        }
+
+        foreach (var party in CreatedParties)
+        {
+            if (party != entry)
+                party.Deselect();
         }
 
         SelectedPartyEntry = entry;

@@ -13,6 +13,7 @@ public class BackPackEntry : MonoBehaviour, IEntry
     public bool IsSelect { get; set; }
     public long Price { get; set; }
 
+
     public event Action<BackPackEntry> Selected;
 
     void Start()
@@ -33,7 +34,7 @@ public class BackPackEntry : MonoBehaviour, IEntry
 
     }
 
-    private void OnBackPackSelected()
+    public void OnBackPackSelected()
     {
         Active.SetActive(true);
         IsSelect = true;
