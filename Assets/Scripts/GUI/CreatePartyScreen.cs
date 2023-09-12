@@ -18,7 +18,7 @@ public class CreatePartyScreen : MonoBehaviour
     private List<CharacterEntry> heroEntries = new();
     private List<CharacterEntry> heroesInParty = new();
     private List<Blockchain.Hero> heroes = new();
-    private List<ConsumableEntry> consumables = new();
+    private List<Consumable> consumables = new();
     private Blockchain.Rarity backpackEquiped;
     private string backpackEquipedName;
 
@@ -35,7 +35,7 @@ public class CreatePartyScreen : MonoBehaviour
         await GetHeroData();
     }
 
-    public event Action<List<Blockchain.Hero>, List<ConsumableEntry>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
+    public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()
@@ -96,7 +96,7 @@ public class CreatePartyScreen : MonoBehaviour
         BackPackScreen.SetActive(false);
     }
 
-    private void OnEquippedReturn(List<ConsumableEntry> consumablesEquipped, string backpackName, Blockchain.Rarity backpack)
+    private void OnEquippedReturn(List<Consumable> consumablesEquipped, string backpackName, Blockchain.Rarity backpack)
     {
         BackPackScreen.SetActive(false);
         consumables = consumablesEquipped;

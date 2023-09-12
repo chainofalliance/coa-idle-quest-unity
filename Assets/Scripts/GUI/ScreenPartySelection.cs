@@ -37,17 +37,27 @@ public class ScreenPartySelection : MonoBehaviour
     private async UniTask<List<ExpeditionOverview>> LoadParties()
     {
         var response = await Instance.GetActiveExpeditions();
-        var cons = new List<ConsumableEntry>();
-        var backpack = "";
 
         foreach (var exp in response)
         {
+            var details = await Instance.GetExpeditionDetails(exp.Id);
+            var backpack = details.Backpack;
+
+            var cons = new List<Consumable>();
+            foreach (var c in details.Consumables)
+            {
+                for (long i = c.Item2; i > 0; i--)
+                {
+                    cons.Add(c.Item1);
+                }
+            }
             var heroes = new List<Blockchain.Hero>();
             foreach (var pm in exp.Party)
                 heroes.Add(pm);
 
             OnPartyUpdated(heroes, cons, backpack, Rarity.Common, exp);
         }
+
         return response;
     }
 
@@ -124,7 +134,7 @@ public class ScreenPartySelection : MonoBehaviour
     }
 
     private void OnPartyUpdated(List<Blockchain.Hero> heroes,
-                                List<ConsumableEntry> consumables,
+                                List<Consumable> consumables,
                                 string backpackName,
                                 Rarity backpack,
                                 ExpeditionOverview exp = default)

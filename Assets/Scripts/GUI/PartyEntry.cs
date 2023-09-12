@@ -93,7 +93,7 @@ public class PartyEntry : MonoBehaviour
     }
 
     public void Initialize(List<Blockchain.Hero> heroesParty,
-                           List<ConsumableEntry> consumable,
+                           List<Consumable> consumable,
                            Config configuration,
                            string backpackName,
                            Rarity rarity,
@@ -113,14 +113,7 @@ public class PartyEntry : MonoBehaviour
         DangerSet = Expedition != default;
         backpackname = backpackName;
         party = heroesParty;
-        consumables = consumable;
-
-        foreach (var cons in consumables)
-        {
-            Debug.Log("!!!!! " + cons.EntryName);
-        }
-
-        partyconsumables.AddRange(consumables.Select(c => c.consumableType));
+        partyconsumables = consumable;
         partyrarity = rarity;
 
         for (int i = 0; i < heroes.Count; i++)

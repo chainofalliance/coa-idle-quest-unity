@@ -22,7 +22,7 @@ public class BackPackMenu : MonoBehaviour
     private BackPackEntry selectedbackpack;
     private int consumableSlots;
 
-    public event Action<List<ConsumableEntry>, string, Blockchain.Rarity> EquippedReturn;
+    public event Action<List<Blockchain.Consumable>, string, Blockchain.Rarity> EquippedReturn;
     public event Action ReturnBack;
 
     async void Start()
@@ -37,7 +37,7 @@ public class BackPackMenu : MonoBehaviour
 
     private void OnEquipClicked()
     {
-        EquippedReturn?.Invoke(backPackconsumables, selectedbackpack.EntryName, ConvertStringToRarity(selectedbackpack.EntryName));
+        EquippedReturn?.Invoke(backPackconsumables.Select(c => c.consumableType).ToList(), selectedbackpack.EntryName, ConvertStringToRarity(selectedbackpack.EntryName));
     }
 
     private void OnAddClicked()
