@@ -105,7 +105,7 @@ public class Blockchain : MonoBehaviour
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
-                .AddOperation(new Operation("IExpedition.use_consumable", expeditionId, item.ToString()))
+                .AddOperation(new Operation("IExpedition.use_consumable", expeditionId, (int)item))
                 .AddSignatureProvider(Signer));
     }
 
@@ -113,7 +113,7 @@ public class Blockchain : MonoBehaviour
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
-                .AddOperation(new Operation("IExpedition.drop_consumable", expeditionId, item.ToString()))
+                .AddOperation(new Operation("IExpedition.drop_consumable", expeditionId, (int)item))
                 .AddSignatureProvider(Signer));
     }
 
