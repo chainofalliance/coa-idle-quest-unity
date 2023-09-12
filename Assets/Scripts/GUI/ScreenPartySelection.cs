@@ -20,11 +20,31 @@ public class ScreenPartySelection : MonoBehaviour
     private List<PartyEntry> CreatedParties = new List<PartyEntry>();
     private PartyEntry SelectedPartyEntry;
 
-    void Start()
+    async void Start()
     {
         StartExpedition.onClick.AddListener(OnStarted);
         Entry.onClick.AddListener(OnEntrySelected);
         Danger.onClick.AddListener(OnDangerSelected);
+
+        await UniTask.Delay(5000);
+        await LoadParties();
+    }
+
+
+    private async UniTask<List<ExpeditionOverview>> LoadParties()
+    {
+        var response = await Blockchain.Instance.GetActiveExpeditions();
+        var cons = new List<ConsumableEntry>();
+     // TODO: How to get consumables and backpacks
+        foreach (var exp in response)
+        {
+            var heroes = new List<Blockchain.Hero>();
+            foreach (var pm in exp.Party)
+                heroes.Add(pm);
+
+            OnPartyUpdated(heroes, cons, Rarity.Common) ;
+        }
+        return response;
     }
 
     private async void OnStarted()
@@ -64,13 +84,9 @@ public class ScreenPartySelection : MonoBehaviour
 
     private async void OnDetailsClicked()
     {
-        if(SelectedPartyEntry.DangerSet == false)
-        {
-            return;
-        }
-
         var result = await Blockchain.Instance.GetActiveExpeditions();
         var exp = result.FirstOrDefault();
+
         if (SelectedPartyEntry == null || exp == null)
         {
             return;
@@ -109,7 +125,6 @@ public class ScreenPartySelection : MonoBehaviour
         {
             CreatedParties.Add(partyEntry);
         }
-
     }
 
     private void OnSelected(PartyEntry entry)
