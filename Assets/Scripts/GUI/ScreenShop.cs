@@ -117,7 +117,7 @@ public class ScreenShop : MonoBehaviour
     {
         TransactionReceipt response = default;
         Title.text = "Connecting to blockchain. Please, wait";
-   
+
         var backpack = backpacks.FirstOrDefault(x => x.IsSelect == true);
 
         if (backpack != null)
@@ -144,6 +144,7 @@ public class ScreenShop : MonoBehaviour
             await RefreshShardsAmount();
             Title.text = "Purchase successful!";
         }
+
     }
 
     private void ClearHeroes()

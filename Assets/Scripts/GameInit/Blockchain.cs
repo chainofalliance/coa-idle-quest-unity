@@ -230,9 +230,9 @@ public class Blockchain : MonoBehaviour
         return await Client.Query<List<ExpeditionOverview>>("IExpedition.get_all", ("account_id", AccountId));
     }
 
-    public async UniTask<List<Expedition>> GetExpeditionDetails(Buffer expeditionId)
+    public async UniTask<Expedition> GetExpeditionDetails(Buffer expeditionId)
     {
-        return await Client.Query<List<Expedition>>("IExpedition.get_details", ("expedition_id", expeditionId));
+        return await Client.Query<Expedition>("IExpedition.get_details", ("expedition_id", expeditionId));
     }
 
     public async UniTask<ChallengeResult> GetChallengeResult(Buffer challengeId)
@@ -340,7 +340,7 @@ public class Blockchain : MonoBehaviour
         public List<PartyMember> Party;
         [JsonProperty("active_challenge")]
         public ActiveChallengeOverview ActiveChallenge;
-        [JsonProperty("next_challenge")]
+        [JsonProperty("next")]
         public List<ChallengeOverview> NextChallenges;
     }
 
