@@ -94,7 +94,7 @@ public class Blockchain : MonoBehaviour
                 .AddOperation(new Operation(
                     "IExpedition.start",
                     heroes.Select(h => (object) h.Id).ToArray(),
-                    items.Select(c => (object) c.ToString()).ToArray(),
+                    items.Select(c => (object) (int)c).ToArray(),
                     (int) dangerLevel,
                     backpack
                 ))
