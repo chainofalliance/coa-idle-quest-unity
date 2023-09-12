@@ -318,6 +318,8 @@ public class Blockchain : MonoBehaviour
 
     public class Expedition
     {
+        [JsonProperty("backpack")]
+        public string Backpack;
         [JsonProperty("party")]
         public List<PartyMember> Party;
         [JsonProperty("challenges")]
