@@ -42,15 +42,7 @@ public class ScreenPartySelection : MonoBehaviour
         {
             var details = await Instance.GetExpeditionDetails(exp.Id);
             var backpack = details.Backpack;
-
-            var cons = new List<Consumable>();
-            foreach (var c in details.Consumables)
-            {
-                for (long i = c.Item2; i > 0; i--)
-                {
-                    cons.Add(c.Item1);
-                }
-            }
+            var cons = details.Consumables;
             var heroes = new List<Blockchain.Hero>();
             foreach (var pm in exp.Party)
                 heroes.Add(pm);
