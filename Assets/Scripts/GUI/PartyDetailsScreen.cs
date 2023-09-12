@@ -17,12 +17,15 @@ public class PartyDetailsScreen : MonoBehaviour
     [SerializeField] private Button OptionOneButton, OptionTwoButton;
     [SerializeField] private GameObject HeroPrefab, HeroRoot;
     [SerializeField] private TextMeshProUGUI Timer;
+    [SerializeField] private GameObject ConsumablesRoot, ConsumablesPrefab;
 
     private TimeSpan timeDifference;
     public Chromia.Buffer Id;
     public List<Blockchain.Hero> party;
-    public List<Blockchain.Consumable> partyconsumables;
-    public Blockchain.Rarity partyrarity;
+    public List<CharacterEntry> heroes;
+    public List<Consumable> partyconsumables;
+    public Rarity partyrarity;
+
     DateTime dateTime;
     public event Action ReturnBack;
     private ExpeditionOverview Expedition;
@@ -51,10 +54,22 @@ public class PartyDetailsScreen : MonoBehaviour
         partyconsumables.AddRange(consumables.Select(c => c.consumableType));
         partyrarity = rarity;
 
+        ClearParty();
+
         for (int i = 0; i < heroesParty.Count; i++)
         {
             var heroEntry = Instantiate(HeroPrefab, HeroRoot.transform).GetComponent<CharacterEntry>();
             heroEntry.Initialize(heroesParty[i], configuration, false, true, true);
+            heroes.Add(heroEntry);
+        }
+    }
+
+    private void ClearParty()
+    {
+        for (int i = heroes.Count - 1; i >= 0; i--)
+        {
+            heroes[i].Destroy();
+            heroes.RemoveAt(i);
         }
     }
 
@@ -62,6 +77,7 @@ public class PartyDetailsScreen : MonoBehaviour
     {
         Expedition = exp;
         Id = exp.Id;
+
    
         ChallengeCompleted.text = $" A {Blockchain.ChallengeDifficulty.Hard} {Blockchain.ChallengeType.Fight} challenge, happens in {Blockchain.Terrain.Savannah}";
 
@@ -115,15 +131,10 @@ public class PartyDetailsScreen : MonoBehaviour
 
     private async UniTask<long> RefreshStuff()
     {
-        Debug.Log("Here");
         var shards = await RefreshShardsAmount();
         ShardsAmount.text = shards.ToString();
 
         var response = await Blockchain.Instance.GetConsumables();
-        foreach (var backpack in response)
-        {
-            Debug.Log(backpack.Consumable.ToString() + " !! " + backpack.Amount.ToString());
-        }
 
         await GetBackPackData();
         var result = await Blockchain.Instance.GetShards();
