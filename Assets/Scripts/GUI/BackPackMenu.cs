@@ -32,7 +32,6 @@ public class BackPackMenu : MonoBehaviour
         Add.onClick.AddListener(OnAddClicked);
 
         await GetConsumableData();
-        await GetBackPackData();
     }
 
     private void OnEquipClicked()

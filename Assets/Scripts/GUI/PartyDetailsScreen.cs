@@ -33,6 +33,7 @@ public class PartyDetailsScreen : MonoBehaviour
 
     DateTime dateTime;
     public event Action ReturnBack;
+    public event Action Finish;
     private ExpeditionOverview expeditionOverview;
     private Expedition expeditionDetails;
     private int consSlots;
@@ -68,7 +69,6 @@ public class PartyDetailsScreen : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Selectable state set");
                     SetNextChallengeOptions();
                 }
 
@@ -115,15 +115,14 @@ public class PartyDetailsScreen : MonoBehaviour
     private async void OnReturn()
     {
         await Blockchain.Instance.RetreatFromExpedition(Id);
-        await Blockchain.Instance.FinishExpedition(Id);
-        ReturnBack?.Invoke();
+        Finish?.Invoke();
     }
 
 
     private async UniTask<TransactionReceipt> OnFinish()
     {
         var result = await Blockchain.Instance.FinishExpedition(Id);
-        ReturnBack?.Invoke();
+        Finish?.Invoke();
         return result;
     }
 
@@ -234,6 +233,10 @@ public class PartyDetailsScreen : MonoBehaviour
 
     private async UniTask<Expedition> RefreshDetails()
     {
+        if(expeditionOverview == null)
+        {
+            return null;
+        }
         var activeChallenge = expeditionOverview.ActiveChallenge;
 
         var details = await Instance.GetExpeditionDetails(Id);
@@ -357,7 +360,9 @@ public class PartyDetailsScreen : MonoBehaviour
         foreach (var hero in challengeResult.Current.Outcome)
         {
             var res = hero.Success ? "successful" : "failed";
-            ChallengeCompleted.text += $" Hero {hero.HeroId} took {hero.Damage}. A neded roll was {hero.NeededRoll}, actual roll was {hero.ActualRoll}, so challenge was {res} \n ";
+            var partyHero = heroes.FirstOrDefault(x => x.HeroID == hero.HeroId).EntryName;
+            
+            ChallengeCompleted.text += $"  {partyHero} took {hero.Damage} damage.\n ";
         }
 
         expeditionDetails = await RefreshDetails();
@@ -374,9 +379,11 @@ public class PartyDetailsScreen : MonoBehaviour
         if (expeditionDetails.Party.Sum(x => x.Health) == 0)
             await OnFinish();
 
+        ChallengeCompleted.text += "You received: ";
+
         foreach (var loot in challengeResult.Current.Loot)
         {
-            //loot.State == 
+            ChallengeCompleted.text += $"{loot.Type}(x{loot.Amount})";
         }
 
         InitializeExpedition(expeditionOverview);

@@ -111,11 +111,26 @@ public class ScreenPartySelection : MonoBehaviour
 
         var partyDetailsScreen = PartyDetailsScreen.GetComponent<PartyDetailsScreen>();
         partyDetailsScreen.ReturnBack += OnReturnFromDetails;
+        partyDetailsScreen.Finish += OnFinish;
         partyDetailsScreen.InitializeParty(SelectedPartyEntry.party,
                                            SelectedPartyEntry.consumables,
                                            Config,
                                            Rarity.Common);
         partyDetailsScreen.InitializeExpedition(expedition);
+
+    }
+
+    private async void OnFinish()
+    {
+
+        PartyDetailsScreen.SetActive(false);
+
+        await LoadParties();
+
+        foreach (var entry in CreatedParties)
+        {
+            entry.RefreshExpedition();
+        }
 
     }
 
