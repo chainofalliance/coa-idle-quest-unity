@@ -63,7 +63,9 @@ public class PartyDetailsScreen : MonoBehaviour
             {
                 if (prevState == State.Traveling)
                 {
-                    ChallengeOverview.text = "You've reached the challenge. What will you do?";
+                    ChallengeOverview.text = $" You've reached the {challenge.Difficulty} challenge of {challenge.Level} level in the {challenge.Terrain} where you face the {challenge.Type}." +
+                $" {challenge.ClassAdvantage} has an advantage.\n What will you do? ";
+         
                     OptionOne.text = "Resolve";
                     OptionTwo.text = "Sneak";
                 }
@@ -115,6 +117,7 @@ public class PartyDetailsScreen : MonoBehaviour
     private async void OnReturn()
     {
         await Blockchain.Instance.RetreatFromExpedition(Id);
+        await Blockchain.Instance.FinishExpedition(Id);
         Finish?.Invoke();
     }
 
@@ -378,12 +381,18 @@ public class PartyDetailsScreen : MonoBehaviour
         }
         if (expeditionDetails.Party.Sum(x => x.Health) == 0)
             await OnFinish();
+        ChallengeCompleted.text += "Effects used: ";
 
-        ChallengeCompleted.text += "You received: ";
+        foreach (var effect in challengeResult.Current.Effects)
+        {
+            ChallengeCompleted.text += $"{effect} ";
+        }
+
+            ChallengeCompleted.text += "You received: ";
 
         foreach (var loot in challengeResult.Current.Loot)
         {
-            ChallengeCompleted.text += $"{loot.Type}(x{loot.Amount})";
+            ChallengeCompleted.text += $"{loot.Type}(x{loot.Amount}) ";
         }
 
         InitializeExpedition(expeditionOverview);
@@ -407,12 +416,12 @@ public class PartyDetailsScreen : MonoBehaviour
         }
         else if (State == State.Traveling)
         {
+            Timer.text = "";
             ChallengeOverview.text = "You've reached the challenge. What will you do?";
             OptionOne.text = "Resolve";
             OptionTwo.text = "Sneak";
         }
 
         State = challenge.States.FirstOrDefault(x => x.CreatedAt == challenge.States.Max(x => x.CreatedAt)).State;
-        Debug.Log("State " + State);
     }
 }
