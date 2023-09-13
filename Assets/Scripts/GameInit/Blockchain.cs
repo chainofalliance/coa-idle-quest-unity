@@ -137,7 +137,7 @@ public class Blockchain : MonoBehaviour
     {
         return await Client.SendUniqueTransaction(Transaction.Build()
                 .AddOperation(AuthOp())
-                .AddOperation(new Operation("IExpedition.advance", challengeId, action.ToString()))
+                .AddOperation(new Operation("IExpedition.advance", challengeId, (int)action))
                 .AddSignatureProvider(Signer));
     }
 
