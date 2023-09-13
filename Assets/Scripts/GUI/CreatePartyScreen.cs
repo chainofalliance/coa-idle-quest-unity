@@ -30,12 +30,12 @@ public class CreatePartyScreen : MonoBehaviour
         Backpack.onClick.AddListener(OnBackpackSelected);
         var shopScreen = ScreenShop.GetComponent<ScreenShop>();
         shopScreen.ReturnBack += OnReturnFromShop;
+        var response = await Blockchain.Instance.GetBackpacks();
+        backpackEquipedName = response.FirstOrDefault().Backpack;
 
-        ResetEntries();
-        await GetHeroData();
-    }
+}
 
-    public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
+public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()

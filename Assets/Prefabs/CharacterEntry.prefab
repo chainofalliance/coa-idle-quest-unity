@@ -605,9 +605,29 @@ PrefabInstance:
       propertyPath: m_AspectRatio
       value: NaN
       objectReference: {fileID: 0}
+    - target: {fileID: 3886598661440311910, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4351865426445353350, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191237427718959115, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191237427718959115, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191237427718959115, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191237427718959115, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 6188505552890236488, guid: fb501b7548fd94346943f9b5e8aced2f, type: 3}
       propertyPath: m_Color.a

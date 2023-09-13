@@ -30,6 +30,11 @@ public class ScreenPartySelection : MonoBehaviour
         await UniTask.Delay(5000);
         await LoadParties();
 
+        foreach (var entry in CreatedParties)
+        {
+            entry.RefreshExpedition();
+        }
+
         Loading.SetActive(false);
     }
 
@@ -85,16 +90,6 @@ public class ScreenPartySelection : MonoBehaviour
         if (Loading.activeSelf)
             return;
 
-        for (int i = CreatedParties.Count - 1; i >= 0; i--)
-        {
-            if (CreatedParties[i].Expedition == default)
-            {
-                CreatedParties[i].Destroy();
-                CreatedParties.RemoveAt(i);
-            }
-
-        }
-
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
 
@@ -104,10 +99,10 @@ public class ScreenPartySelection : MonoBehaviour
 
     private async void OnDetailsClicked()
     {
-        var result = await Blockchain.Instance.GetActiveExpeditions();
-        var exp = result.FirstOrDefault();
+        var result = await Instance.GetActiveExpeditions();
+        var expedition = result.FirstOrDefault(x => x.CreatedAt == result.Max(x => x.CreatedAt));
 
-        if (SelectedPartyEntry == null || exp == null)
+        if (SelectedPartyEntry == null || expedition == null)
         {
             return;
         }
@@ -120,7 +115,7 @@ public class ScreenPartySelection : MonoBehaviour
                                            SelectedPartyEntry.consumables,
                                            Config,
                                            Rarity.Common);
-        partyDetailsScreen.InitializeExpedition(exp);
+        partyDetailsScreen.InitializeExpedition(expedition);
 
     }
 
@@ -128,6 +123,13 @@ public class ScreenPartySelection : MonoBehaviour
     {
         SelectedPartyEntry.Deselect();
         PartyDetailsScreen.SetActive(false);
+
+        foreach(var entry in CreatedParties)
+        {
+            entry.RefreshExpedition();
+        }
+
+       // LoadParties();
     }
     private void OnReturn()
     {
@@ -142,6 +144,15 @@ public class ScreenPartySelection : MonoBehaviour
                                 ExpeditionOverview exp = default)
     {
         CreatePartyScreen.SetActive(false);
+
+        for (int i = CreatedParties.Count - 1; i >= 0; i--)
+        {
+            if (CreatedParties[i].Expedition == default)
+            {
+                CreatedParties[i].Destroy();
+                CreatedParties.RemoveAt(i);
+            }
+        }
 
         var partyEntry = Instantiate(PartyPrefab, PartyRoot.transform).GetComponent<PartyEntry>();
         partyEntry.Initialize(heroes, consumables, Config, backpackName, backpack, exp);

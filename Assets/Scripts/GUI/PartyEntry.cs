@@ -27,7 +27,7 @@ public class PartyEntry : MonoBehaviour
     private TimeSpan timeDifference;
     public event Action<PartyEntry> Selected;
     public event Action DetailsClicked;
-
+    private DateTime dateTime;
     void Start()
     {
         Entry.onClick.AddListener(OnPartySelected);
@@ -50,6 +50,15 @@ public class PartyEntry : MonoBehaviour
         Active.SetActive(false);
     }
 
+    public void RefreshExpedition()
+    {
+        if (Expedition != default)
+        {
+            InitializeExpedition();
+        }
+
+    }
+
     public void Destroy()
     {
         Destroy(gameObject);
@@ -65,19 +74,27 @@ public class PartyEntry : MonoBehaviour
     public async void InitializeExpedition()
     {
         var result = await Instance.GetActiveExpeditions();
-        Expedition = result.FirstOrDefault();
+        Expedition = result.FirstOrDefault(x => x.CreatedAt == result.Max(x => x.CreatedAt));
 
-        if (Expedition != null && Expedition.ActiveChallenge.ArrivalAt > 0)
+
+        if (Expedition != null && Expedition.ActiveChallenge != null)
         {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(Expedition.ActiveChallenge.ArrivalAt).ToLocalTime();
+            dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddMilliseconds(Expedition.ActiveChallenge.ArrivalAt);
             timeDifference = dateTime - DateTime.UtcNow;
-
-            Notification.SetActive(true);
         }
-
-        DangerSet = true;
-        Danger.text = $"In {Expedition.DangerLevel} Expedition";
+        else if(Expedition != null)
+        {
+            Notification.SetActive(true);
+            DangerSet = true;
+            Danger.text = $"In {Expedition.DangerLevel} Expedition";
+        }
+        else
+        {
+            Danger.text = "";
+            DangerSet = false;
+            return;
+        }
     }
 
     public void InitializeDanger()
@@ -98,7 +115,6 @@ public class PartyEntry : MonoBehaviour
     {
         if (exp != default)
         {
-            Notification.SetActive(true);
             Danger.text = $"In {exp.DangerLevel} Expedition";
         }
         else
@@ -119,14 +135,24 @@ public class PartyEntry : MonoBehaviour
         }
     }
 
-  
+
     void Update()
     {
         Details.interactable = Active.activeSelf && Expedition != default;
 
-        if (timeDifference.Milliseconds > 0)
+        if(Expedition == default)
+            return;
+
+        if (Expedition.ActiveChallenge != null && dateTime > DateTime.UtcNow)
         {
-            Timer.text = timeDifference.ToString("H:mm:ss");
+            timeDifference = dateTime - DateTime.UtcNow;
+            Timer.text = timeDifference.ToString(@"hh\:mm\:ss");
+            Notification.SetActive(false);
         }
+        else
+        {
+            Notification.SetActive(true);
+        }
+
     }
 }

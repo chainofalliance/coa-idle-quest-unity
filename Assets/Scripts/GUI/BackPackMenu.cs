@@ -126,6 +126,7 @@ public class BackPackMenu : MonoBehaviour
 
         foreach (var backpack in response)
         {
+            Debug.Log(backpack.Backpack + " " + backpack.Amount);
             for (long i = backpack.Amount ; i > 0; i--)
             {
                 var backPackEntry = Instantiate(BackpackPrefab, BackPackRoot.transform).GetComponent<BackPackEntry>();

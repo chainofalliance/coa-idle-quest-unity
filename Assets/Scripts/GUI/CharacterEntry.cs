@@ -26,10 +26,11 @@ public class CharacterEntry : MonoBehaviour, IEntry
     public Sprite HeroImage { get; set; }
     public bool IsSelect { get; set; }
     public bool IsAvailable { get; set; }
+    public int Health { get; set; }
     public Blockchain.Hero Hero;
     private bool isParty;
     private bool isManagable;
-
+    private Config config;
     public event Action<CharacterEntry> Selected;
     public event Action<CharacterEntry> Deleted;
     void Start()
@@ -65,17 +66,14 @@ public class CharacterEntry : MonoBehaviour, IEntry
     public void Initialize(Blockchain.Hero hero, Config configuration, bool managable, bool isPartyEntry, bool isAvailable, int price = default)
     {
         Hero = hero;
+        Health = Hero.Health;
         isParty = isPartyEntry;
         Price = price;
         RaceIcon.sprite = configuration.RaceIcons.FirstOrDefault(x => x.species == hero.Species).icon;
         Name.text = hero.Name;
         EntryName = $"{hero.Rarity} {hero.Species} {hero.Class}";
         HeroID = hero.Id;
-        var fullBaseHealth = configuration.BaseHealths.FirstOrDefault(x => x.classType == hero.Class).health;
-        var healthCoef = configuration.BaseHealthCoefs.FirstOrDefault(x => x.rarity == hero.Rarity).coef;
-        var fullRarityHealth = fullBaseHealth * healthCoef;
-        HealthFillAmount.fillAmount = (float)hero.Health / fullRarityHealth;
-        HealthString.text = $"{hero.Health}/{fullRarityHealth}";
+        config = configuration;
         RarityIcon.sprite = configuration.HeroRarityIcons.FirstOrDefault(x => x.rarity == hero.Rarity).heroRarity;
         ClassIcon.sprite = configuration.ClassIcons.FirstOrDefault(x => x.heroClass == hero.Class).icon;
         InParty.SetActive(!isAvailable);
@@ -90,7 +88,14 @@ public class CharacterEntry : MonoBehaviour, IEntry
         Destroy(gameObject);
     }
 
-
+    private void Update()
+    {
+        var fullBaseHealth = config.BaseHealths.FirstOrDefault(x => x.classType == Hero.Class).health;
+        var healthCoef = config.BaseHealthCoefs.FirstOrDefault(x => x.rarity == Hero.Rarity).coef;
+        var fullRarityHealth = fullBaseHealth * healthCoef;
+        HealthFillAmount.fillAmount = (float)Health / fullRarityHealth;
+        HealthString.text = $"{Hero.Health}/{fullRarityHealth}";
+    }
 
     public void Select(bool status) => Active.SetActive(true);
     public void Deselect(bool status) => Active.SetActive(false);
