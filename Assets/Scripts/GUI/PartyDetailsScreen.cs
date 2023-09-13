@@ -65,7 +65,7 @@ public class PartyDetailsScreen : MonoBehaviour
             }
             if (state == State.Traveling)
             {
-                ChallengeOverview.text += $"You've chosen {challenge.Difficulty} challenge of {challenge.Level} level in the {challenge.Terrain} where you face the {challenge.Type}." +
+                ChallengeOverview.text = $"You've chosen {challenge.Difficulty} challenge of {challenge.Level} level in the {challenge.Terrain} where you face the {challenge.Type}." +
                     $" {challenge.ClassAdvantage} has an advantage.\n";
             }
 
@@ -267,6 +267,7 @@ public class PartyDetailsScreen : MonoBehaviour
         await Instance.UseConsumable(Id, selectedConsumable.consumableType);
 
         expeditionDetails = await RefreshDetails();
+
         foreach (var hero in expeditionDetails.Party)
         {
             foreach (var partyHero in heroes)
@@ -278,6 +279,7 @@ public class PartyDetailsScreen : MonoBehaviour
             }
         }
 
+        OnConsumablesClicked();
         RefreshStuff();
     }
 
@@ -369,12 +371,6 @@ public class PartyDetailsScreen : MonoBehaviour
         }
         if (expeditionDetails.Party.Sum(x => x.Health) == 0)
             await OnFinish();
-        ChallengeCompleted.text += "Effects used: ";
-
-        foreach (var effect in challengeResult.Current.Effects)
-        {
-            ChallengeCompleted.text += $"{effect} ";
-        }
 
         ChallengeCompleted.text += "You received: ";
 
@@ -394,6 +390,8 @@ public class PartyDetailsScreen : MonoBehaviour
 
     void Update()
     {
+        Use.interactable = challenge != null && selectedConsumable != null;
+
         if (challenge == null)
             return;
 

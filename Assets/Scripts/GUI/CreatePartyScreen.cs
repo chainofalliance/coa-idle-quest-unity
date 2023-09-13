@@ -11,7 +11,7 @@ public class CreatePartyScreen : MonoBehaviour
 {
     [SerializeField] private Config Config;
     [SerializeField] private Button Entry, Shop, Backpack, Back;
-    [SerializeField] private GameObject ScreenShop,BackPackScreen;
+    [SerializeField] private GameObject ScreenShop, BackPackScreen;
     [SerializeField] private GameObject PartyPrefab, PartyRoot, HeroPrefab, HeroRoot;
 
     private List<PartyEntry> createdParties = new();
@@ -33,9 +33,9 @@ public class CreatePartyScreen : MonoBehaviour
         var response = await Blockchain.Instance.GetBackpacks();
         backpackEquipedName = response.FirstOrDefault().Backpack;
 
-}
+    }
 
-public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
+    public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.Rarity, ExpeditionOverview> PartyUpdated;
     public event Action ReturnClicked;
 
     private void OnBackSelected()
@@ -47,6 +47,7 @@ public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.
     private async void OnEnable()
     {
         ResetEntries();
+
         await GetHeroData();
     }
 
@@ -77,6 +78,8 @@ public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.
             heroesInParty[i].Destroy();
             heroesInParty.RemoveAt(i);
         }
+
+        heroes.Clear();
     }
 
     private void OnShopSelected()
@@ -84,7 +87,7 @@ public event Action<List<Blockchain.Hero>, List<Consumable>, string, Blockchain.
         ScreenShop.SetActive(true);
     }
 
-    private async  void OnReturnFromShop()
+    private async void OnReturnFromShop()
     {
         ScreenShop.SetActive(false);
         ResetEntries();

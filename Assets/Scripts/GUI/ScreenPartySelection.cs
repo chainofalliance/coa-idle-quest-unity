@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Blockchain;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class ScreenPartySelection : MonoBehaviour
 {
@@ -72,7 +73,12 @@ public class ScreenPartySelection : MonoBehaviour
             SelectedPartyEntry.backpackname);
 
         if (result.Status == Chromia.TransactionReceipt.ResponseStatus.Confirmed)
+        {
+            var expeditions = await Instance.GetActiveExpeditions();
+            var expedition = expeditions.FirstOrDefault(x => x.CreatedAt == expeditions.Max(x => x.CreatedAt));
             SelectedPartyEntry.InitializeExpedition();
+        }
+          
     }
 
     private void OnDangerSelected()
@@ -89,6 +95,10 @@ public class ScreenPartySelection : MonoBehaviour
     {
         if (Loading.activeSelf)
             return;
+
+        foreach (var party in CreatedParties)
+                party.Deselect();
+        SelectedPartyEntry = null;
 
         CreatePartyScreen.SetActive(true);
         var createPartyScreen = CreatePartyScreen.GetComponent<CreatePartyScreen>();
@@ -115,7 +125,7 @@ public class ScreenPartySelection : MonoBehaviour
         partyDetailsScreen.InitializeParty(SelectedPartyEntry.party,
                                            SelectedPartyEntry.consumables,
                                            Config,
-                                           Rarity.Common);
+                                           SelectedPartyEntry.partyrarity);
         partyDetailsScreen.InitializeExpedition(expedition);
 
     }
@@ -163,7 +173,7 @@ public class ScreenPartySelection : MonoBehaviour
                                 ExpeditionOverview exp = default)
     {
         CreatePartyScreen.SetActive(false);
-
+     
         for (int i = CreatedParties.Count - 1; i >= 0; i--)
         {
             if (CreatedParties[i].Expedition == default)
@@ -172,6 +182,7 @@ public class ScreenPartySelection : MonoBehaviour
                 CreatedParties.RemoveAt(i);
             }
         }
+        Debug.Log(heroes.Count + "count");
 
         var partyEntry = Instantiate(PartyPrefab, PartyRoot.transform).GetComponent<PartyEntry>();
         partyEntry.Initialize(heroes, consumables, Config, backpackName, backpack, exp);
