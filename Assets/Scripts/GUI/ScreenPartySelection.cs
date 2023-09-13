@@ -122,9 +122,13 @@ public class ScreenPartySelection : MonoBehaviour
 
     private async void OnFinish()
     {
-
         PartyDetailsScreen.SetActive(false);
 
+        for (int i = CreatedParties.Count - 1; i >= 0; i--)
+        {
+            CreatedParties[i].Destroy();
+            CreatedParties.RemoveAt(i);
+        }
         await LoadParties();
 
         foreach (var entry in CreatedParties)
@@ -139,12 +143,12 @@ public class ScreenPartySelection : MonoBehaviour
         SelectedPartyEntry.Deselect();
         PartyDetailsScreen.SetActive(false);
 
-        foreach(var entry in CreatedParties)
+        foreach (var entry in CreatedParties)
         {
             entry.RefreshExpedition();
         }
 
-       // LoadParties();
+        // LoadParties();
     }
     private void OnReturn()
     {

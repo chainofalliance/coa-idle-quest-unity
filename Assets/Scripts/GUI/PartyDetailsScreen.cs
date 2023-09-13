@@ -61,19 +61,7 @@ public class PartyDetailsScreen : MonoBehaviour
             state = value;
             if (state == State.Selectable && challenge != null)
             {
-                if (prevState == State.Traveling)
-                {
-                    ChallengeOverview.text = $" You've reached the {challenge.Difficulty} challenge of {challenge.Level} level in the {challenge.Terrain} where you face the {challenge.Type}." +
-                $" {challenge.ClassAdvantage} has an advantage.\n What will you do? ";
-         
-                    OptionOne.text = "Resolve";
-                    OptionTwo.text = "Sneak";
-                }
-                else
-                {
-                    SetNextChallengeOptions();
-                }
-
+                SetNextChallengeOptions();
             }
             if (state == State.Traveling)
             {
@@ -236,7 +224,7 @@ public class PartyDetailsScreen : MonoBehaviour
 
     private async UniTask<Expedition> RefreshDetails()
     {
-        if(expeditionOverview == null)
+        if (expeditionOverview == null)
         {
             return null;
         }
@@ -364,7 +352,7 @@ public class PartyDetailsScreen : MonoBehaviour
         {
             var res = hero.Success ? "successful" : "failed";
             var partyHero = heroes.FirstOrDefault(x => x.HeroID == hero.HeroId).EntryName;
-            
+
             ChallengeCompleted.text += $"  {partyHero} took {hero.Damage} damage.\n ";
         }
 
@@ -388,7 +376,7 @@ public class PartyDetailsScreen : MonoBehaviour
             ChallengeCompleted.text += $"{effect} ";
         }
 
-            ChallengeCompleted.text += "You received: ";
+        ChallengeCompleted.text += "You received: ";
 
         foreach (var loot in challengeResult.Current.Loot)
         {
@@ -417,7 +405,8 @@ public class PartyDetailsScreen : MonoBehaviour
         else if (State == State.Traveling)
         {
             Timer.text = "";
-            ChallengeOverview.text = "You've reached the challenge. What will you do?";
+            ChallengeOverview.text = $" You've reached the {challenge.Difficulty} challenge of {challenge.Level} level in the {challenge.Terrain} where you face the {challenge.Type}." +
+                $" {challenge.ClassAdvantage} has an advantage.\n What will you do? ";
             OptionOne.text = "Resolve";
             OptionTwo.text = "Sneak";
         }
